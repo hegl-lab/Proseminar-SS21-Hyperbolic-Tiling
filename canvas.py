@@ -16,7 +16,7 @@ class Canvas:
         self.cv.pack()
         self.draw_circle(0, 1, "black")
 
-        N = 5
+        N = 10
         angles = [2*k*np.pi/N for k in range(N)]
         self.draw_broken_line([0.5 + 0.3*np.exp(1j*theta) for theta in angles], "green")
 

@@ -19,10 +19,27 @@ class Window:
 
 if __name__ == "__main__":
     main_window = Window()
-    z1=0.5+0.1j
-    z2=-0.5+0.1j
+<<<<<<< HEAD
+  
+=======
+    z1=0.3+0.1j
+    z2=-0.1-0.2j
+    
     main_window.canvas.draw_H2_segment(z1, z2, "green")
-    #z1=0.5+0.5j
-    #z2=-0.5-0.5j
-    #main_window.canvas.draw_H2_segment(z1, z2, "orange")
+    z1=0.5+0.5j
+    z2=-0.5-0.5j
+    main_window.canvas.draw_H2_segment(z1, z2, "orange")
+
+    # Test for draw_H2_triangle
+    z21 = 0.2 + 0.2j
+    z22 = -0.2 + 0.2j #problem in h2geometry because imz21 and imz22 are equal.
+    z23 = -0.2 - 0.2j
+    main_window.canvas.draw_H2_triangle(z21, z22, z23, "cyan")
+
+    # Test for draw_H2_polygon
+    z24 = 0.2 - 0.2j
+    z = [z21,z22,z23,z24]
+    main_window.canvas.draw_H2_polygon(z, "magenta")
+
+>>>>>>> defc91018dd673fbbeced43892836dc859076343
     main_window.run()

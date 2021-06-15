@@ -21,8 +21,15 @@ if __name__ == "__main__":
     main_window = Window()
     z1=0.3+0.1j
     z2=-0.1-0.2j
+    
     main_window.canvas.draw_H2_segment(z1, z2, "green")
     z1=0.5+0.5j
     z2=-0.5-0.5j
     main_window.canvas.draw_H2_segment(z1, z2, "orange")
+
+    z1 = 0.5 + 0.7j
+    z2= 0.1 - 0.1j
+    z3 = 0.2 - 0.13j
+    main_window.canvas.draw_H2_triangle(z1, z2, z3, "cyan")
+
     main_window.run()

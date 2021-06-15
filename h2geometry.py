@@ -16,10 +16,11 @@ class H2_segment:
         ''' returns the Euclidean circle that the hyperbolic segment is an arc of '''
         # complete
         # return c, r
+        midx = (self.z1.real + self.z2.real) / 2
+        midy = (self.z1.imag + self.z2.imag) / 2
+
         if normsq(self.z1)<=1 and normsq(self.z2)<=1:
-            if self.z2.imag - self.z1.imag!=0:
-                midx = (self.z1.real + self.z2.real) / 2
-                midy = (self.z1.imag + self.z2.imag) / 2
+            if self.z2.imag != self.z1.imag:
                 slope = (self.z1.real - self.z2.real) / (self.z2.imag - self.z1.imag)
                 if midy != slope * midx:
                     delta = -4 * (midy - midx * slope) ** 2 + 4 * (1 + slope ** 2)

@@ -92,7 +92,9 @@ class Canvas:
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''
-        # to complete
+        self.draw_H2_segment(z1, z2, color)
+        self.draw_H2_segment(z2, z3, color)
+        self.draw_H2_segment(z3, z1, color)
 
     def draw_H2_polygon(self, z, color, fill=False):
         ''' Draws a hyperbolic triangle given by its list of vertices (z is a list)'''

@@ -1,4 +1,5 @@
 import tkinter
+import math
 from h2geometry import *
 from tools import mod2pi
 
@@ -10,15 +11,15 @@ class Canvas:
         self.origin_Y = self.size_px/2
         self.scale = self.size_px/self.size_math
         self.next = "red"
-    
+        
         self.cv = tkinter.Canvas(top, width=self.size_px, height=self.size_px, bg="white")
         self.cv.focus_set()
         self.cv.pack()
-        self.draw_circle(0, 1, "black")
+        self.draw_circle(0, 1, "purple")
 
-        N = 10
-        angles = [2*k*np.pi/N for k in range(N)]
-        self.draw_broken_line([0.5 + 0.3*np.exp(1j*theta) for theta in angles], "green")
+        #N = 10
+        #angles = [2*k*np.pi/N for k in range(N)]
+        #self.draw_broken_line([0.5 + 0.3*np.exp(1j*theta) for theta in angles], "green")
 
     def mouse_click(self, event):
         X, Y = event.x, event.y
@@ -68,10 +69,26 @@ class Canvas:
         self.cv.create_arc(X-R, Y-R, X+R+1, Y+R+1, start=angle1*180/np.pi, extent=mod2pi(angle2-angle1)*180/np.pi, outline=color, style=tkinter.ARC, width=1)
 
 
-    def draw_H2_segment(self, z1, z2, color):
+    def draw_H2_segment(self, z1, z2, color="blue"):
         ''' Draws the hyperbolic segment between two points '''
-        # to complete
-
+        #define an H2_segment object
+        segment=H2_segment(z1, z2)
+        self.draw_point(z1,"red")
+        self.draw_point(z2,"red")
+        #find the Euclidean circle that includes z1 and z2 and is centered on the boundary of the disk
+        r, c=segment.get_circle()
+        #get the corresponding ideal endpoints
+        e1, e2=segment.get_ideal_endpoints()
+        #2 cases
+        # case 1: the euclidean line connecting z1 and z2 is a diameter-->r==-1 and c=0
+        # case 2: the euclidean line connecting z1 and z2 is not a diameter
+        if r==-1 and c==0+0*1j:
+            self.draw_segment(e1, e2, color)
+        else:
+            self.draw_point(c,"purple")
+            #self.draw_segment(z1, c, "green")
+            #self.draw_segment(z2, c, "green")
+            self.draw_circle_arc(c, r, e1, e2, color)
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''

@@ -18,11 +18,11 @@ class H2_segment:
         # return c, r
         midx = (self.z1.real + self.z2.real) / 2
         midy = (self.z1.imag + self.z2.imag) / 2
-
         if normsq(self.z1)<=1 and normsq(self.z2)<=1:
             if self.z2.imag != self.z1.imag:
                 slope = (self.z1.real - self.z2.real) / (self.z2.imag - self.z1.imag)
-                if midy != slope * midx:
+                #the condition midy!=slope*midx alone was causing trouble for z1.real==z2.real
+                if midy != slope * midx or self.z1.real==self.z2.real:
                     delta = -4 * (midy - midx * slope) ** 2 + 4 * (1 + slope ** 2)
                     x1=(-2 * slope * (midy - slope * midx) + math.sqrt(delta)) / (2 * (1 + slope ** 2))
                     y1=midy + slope * (x1 - midx)
@@ -41,10 +41,6 @@ class H2_segment:
                     r=-1
                     c=0+0*1j
                 else:
-                    ######### added to work for points with same imaginary parts
-                    midx = (self.z1.real + self.z2.real) / 2
-                    midy = (self.z1.imag + self.z2.imag) / 2
-                    #########
                     x=midx
                     y=math.sqrt(1-x**2)
                     if y*self.z1.imag<0:
@@ -61,11 +57,13 @@ class H2_segment:
         if r==-1 and c==0+0*1j:
             z1=self.z1
             z2=self.z2
-            delta=4*(z2.real-z1.real)**2*((z2.real-z1.real)**2+(z2.imag-z1.imag)**2-(z1.real*z2.imag-z1.imag*z2.real)**2)
-            x1=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)+math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
-            x2=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)-math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
-            y1=z1.imag+(x1-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
-            y2=z1.imag+(x2-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
+            if z1.real!=z2.real:
+                delta=4*(z2.real-z1.real)**2*((z2.real-z1.real)**2+(z2.imag-z1.imag)**2-(z1.real*z2.imag-z1.imag*z2.real)**2)
+                x1=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)+math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
+                x2=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)-math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
+                y1=z1.imag+(x1-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
+                y2=z1.imag+(x2-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
+
         else:
             a=c.real
             b=c.imag

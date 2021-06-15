@@ -40,6 +40,10 @@ class H2_segment:
                     r=-1
                     c=0+0*1j
                 else:
+                    ######### added to work for points with same imaginary parts
+                    midx = (self.z1.real + self.z2.real) / 2
+                    midy = (self.z1.imag + self.z2.imag) / 2
+                    #########
                     x=midx
                     y=math.sqrt(1-x**2)
                     if y*self.z1.imag<0:

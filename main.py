@@ -27,9 +27,15 @@ if __name__ == "__main__":
     z2=-0.5-0.5j
     main_window.canvas.draw_H2_segment(z1, z2, "orange")
 
-    z1 = 0.5 + 0.7j
-    z2= 0.1 - 0.1j
-    z3 = 0.2 - 0.13j
-    main_window.canvas.draw_H2_triangle(z1, z2, z3, "cyan")
+    # Test for draw_H2_triangle
+    z21 = 0.2 + 0.2j
+    z22 = -0.2 + 0.2j
+    z23 = -0.2 - 0.2j
+    main_window.canvas.draw_H2_triangle(z21, z22, z23, "cyan")
+
+    # Test for draw_H2_polygon
+    z24 = 0.2 - 0.2j
+    z = [z21,z22,z23,z24]
+    main_window.canvas.draw_H2_polygon(z, "magenta")
 
     main_window.run()

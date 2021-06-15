@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     # Test for draw_H2_triangle
     z21 = 0.2 + 0.2j
-    z22 = -0.2 + 0.2j
+    z22 = -0.2 + 0.2j #problem in h2geometry because imz21 and imz22 are equal.
     z23 = -0.2 - 0.2j
     main_window.canvas.draw_H2_triangle(z21, z22, z23, "cyan")
 

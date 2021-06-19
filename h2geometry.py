@@ -92,7 +92,9 @@ def H2_midpoint(z1, z2):
     # complete
 
 def H2_midpoint_help_function(z1, z):
+    """Sends z1 to 0 and z somewhere else. This is an isometry"""
     return (z - z1) / (1 - math.sqrt(normsq(z1)) * z)
 
 def H2_midpoint_inverse_help_function(z1, z):
+    """Sends 0 to z1. This is an isometry and the inverse of the other help function."""
     return (z + z1) / (1 + math.sqrt(normsq(z1))*z)

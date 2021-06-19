@@ -89,17 +89,15 @@ class H2_reflection:
 
 def H2_midpoint(z1, z2):
     ''' Computes the hyperbolic midpoint of two points in the Poincaré disk model '''
+    # Something is wrong here and I don't know what.
     fz2 = H2_midpoint_help_function(z1, z2)
-    r1 = math.sqrt(normsq(z))
+    r1 = math.sqrt(normsq(z1))
     hyp_dist = H2_distance_on_diameter(r1)
     half_hyp_dist = hyp_dist / 2
     r2 = eucl_dist_from_hyp_dist(half_hyp_dist)
     m2 = r2 / r1 * fz2
 
-    return H2_midpoint_inverse_help_function(m2)
-
-
-    # complete
+    return H2_midpoint_inverse_help_function(z1, m2)
 
 def H2_midpoint_help_function(z1, z):
     """Sends z1 to 0 and z somewhere else. This is an isometry"""

@@ -90,3 +90,9 @@ class H2_reflection:
 def H2_midpoint(z1, z2):
     ''' Computes the hyperbolic midpoint of two points in the Poincaré disk model '''
     # complete
+
+def H2_midpoint_help_function(z1, z):
+    return (z - z1) / (1 - math.sqrt(normsq(z1)) * z)
+
+def H2_midpoint_inverse_help_function(z1, z):
+    return (z + z1) / (1 + math.sqrt(normsq(z1))*z)

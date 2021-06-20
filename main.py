@@ -27,12 +27,15 @@ if __name__ == "__main__":
     main_window.canvas.draw_H2_segment(z1, z2, "orange")
 
     # Test for draw_H2_triangle
-    z21 = 0.2 + 0.2j
-    z22 = -0.2 + 0.2j #problem in h2geometry because imz21 and imz22 are equal.
-    z23 = -0.2 - 0.2j
-    main_window.canvas.draw_H2_triangle(z21, z22, z23, "cyan")
+    z11 = 0.5 + 0.5j
+    z12 = -0.5 + 0.5j 
+    z13 = -0.2 - 0.7j
+    main_window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
 
     # Test for draw_H2_polygon
+    z21 = 0.2 + 0.2j
+    z22 = -0.2 + 0.2j 
+    z23 = -0.2 - 0.2j
     z24 = 0.2 - 0.2j
     z = [z21,z22,z23,z24]
     main_window.canvas.draw_H2_polygon(z, "magenta")

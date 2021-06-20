@@ -97,9 +97,12 @@ class Canvas:
         self.draw_H2_segment(z2, z3, color)
         self.draw_H2_segment(z3, z1, color)
         
+        # tests that I will remove:
+        #self.draw_point(H2_midpoint(z1,z2))
+        
 
     def draw_H2_polygon(self, z, color, fill=False):
-        ''' Draws a hyperbolic triangle given by its list of vertices (z is a list)'''
+        ''' Draws a hyperbolic polygon given by its list of vertices (z is a list)'''
         i = 0 
         for vertex in z:
             self.draw_H2_segment(z[i-1],z[i], color)

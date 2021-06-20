@@ -10,45 +10,28 @@ class H2_segment:
         self.z1=z1
         self.z2=z2
         # complete
-            
-            
+
+
     def get_circle(self):
         ''' returns the Euclidean circle that the hyperbolic segment is an arc of '''
         # complete
         # return c, r
-        midx = (self.z1.real + self.z2.real) / 2
-        midy = (self.z1.imag + self.z2.imag) / 2
-        if normsq(self.z1)<=1 and normsq(self.z2)<=1:
-            if self.z2.imag != self.z1.imag:
-                slope = (self.z1.real - self.z2.real) / (self.z2.imag - self.z1.imag)
-                #the condition midy!=slope*midx alone was causing trouble for z1.real==z2.real
-                if midy != slope * midx or self.z1.real==self.z2.real:
-                    delta = -4 * (midy - midx * slope) ** 2 + 4 * (1 + slope ** 2)
-                    x1=(-2 * slope * (midy - slope * midx) + math.sqrt(delta)) / (2 * (1 + slope ** 2))
-                    y1=midy + slope * (x1 - midx)
-                    x2=(-2 * slope * (midy - slope * midx) - math.sqrt(delta)) / (2 * (1 + slope ** 2))
-                    y2=midy + slope * (x2 - midx)
-                    if math.sqrt(((x1 - midx) ** 2) + ((y1 - midy) ** 2)) < math.sqrt(((x2 - midx) ** 2) + ((y2 - midy) ** 2)):
-                        c=x1+y1*1j
-                    else:
-                        c=x2+y2*1j
-                    r=math.sqrt(((c.real-self.z1.real)**2)+((c.imag-self.z1.imag))**2)  
-                else:
-                    r=-1
-                    c=0+0*1j
-            else:
-                if self.z1.imag == 0:
-                    r=-1
-                    c=0+0*1j
-                else:
-                    x=midx
-                    y=math.sqrt(1-x**2)
-                    if y*self.z1.imag<0:
-                        y=-y
-                    c=x+y*1j
-                    r=math.sqrt(((c.real-self.z1.real)**2)+((c.imag-self.z1.imag))**2)
-        return r,c
-                    
+        norm_M_z1 = normsq(z1)
+        length_A_S = math.sqrt(1 - (norm_M_z1) ** 2)
+        senk_A = -z1.imag + z1.real * j
+        senk_A.real = senk_A.real / (normsq(senk_A) * length_A_S)
+        senk_A.imag = senk_A.imag / (normsq(senk_A) * length_A_S)
+        S = z1 + senk_A
+        s = -S.real +S.imag * j
+        x = S / (z1 - (s))
+        A = S + (x * (s))
+        K1 = z1 + 0.5 * normsq(A-z1)
+        K2 = z1 + 0.5 * normsq(z2 - z1)
+        x = (K1-K2) / ((z2-z1)-(A-z1))
+        c = K1 + x * (A-z1)
+        r = normsq (c - z1)
+        return(c, r)
+
                                                   
     def get_ideal_endpoints(self):
         ''' returns the ideal endpoints of the geodesic extending the segment '''

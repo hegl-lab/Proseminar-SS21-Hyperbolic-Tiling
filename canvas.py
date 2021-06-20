@@ -77,7 +77,6 @@ class Canvas:
         self.draw_point(z2,"red")
         #find the Euclidean circle that includes z1 and z2 and is centered on the boundary of the disk
         r, c=segment.get_circle()
-        self.draw_point(c, "blue")
         #get the corresponding ideal endpoints
         e1, e2=segment.get_ideal_endpoints()
         self.draw_point(e1,"blue")

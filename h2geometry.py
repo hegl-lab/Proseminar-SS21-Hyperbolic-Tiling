@@ -16,20 +16,20 @@ class H2_segment:
         ''' returns the Euclidean circle that the hyperbolic segment is an arc of '''
         # complete
         # return c, r
-        norm_M_z1 = normsq(z1)
+        norm_M_z1 = normsq(self.z1)
         length_A_S = math.sqrt(1 - (norm_M_z1) ** 2)
-        senk_A = -z1.imag + z1.real * j
+        senk_A = -self.z1.imag + self.z1.real * j
         senk_A.real = senk_A.real / (normsq(senk_A) * length_A_S)
         senk_A.imag = senk_A.imag / (normsq(senk_A) * length_A_S)
-        S = z1 + senk_A
+        S = self.z1 + senk_A
         s = -S.real +S.imag * j
-        x = S / (z1 - (s))
+        x = S / (self.z1 - (s))
         A = S + (x * (s))
-        K1 = z1 + 0.5 * normsq(A-z1)
-        K2 = z1 + 0.5 * normsq(z2 - z1)
-        x = (K1-K2) / ((z2-z1)-(A-z1))
-        c = K1 + x * (A-z1)
-        r = normsq (c - z1)
+        K1 = self.z1 + 0.5 * normsq(A-self.z1)
+        K2 = self.z1 + 0.5 * normsq(self.z2 - self.z1)
+        x = (K1-K2) / ((self.z2-self.z1)-(A-self.z1))
+        c = K1 + x * (A-self.z1)
+        r = normsq (c - self.z1)
         return(c, r)
 
                                                   

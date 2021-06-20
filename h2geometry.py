@@ -10,45 +10,21 @@ class H2_segment:
         self.z1=z1
         self.z2=z2
         # complete
-            
-            
+
     def get_circle(self):
         ''' returns the Euclidean circle that the hyperbolic segment is an arc of '''
-        # complete
-        # return c, r
-        midx = (self.z1.real + self.z2.real) / 2
-        midy = (self.z1.imag + self.z2.imag) / 2
-        if normsq(self.z1)<=1 and normsq(self.z2)<=1:
-            if self.z2.imag != self.z1.imag:
-                slope = (self.z1.real - self.z2.real) / (self.z2.imag - self.z1.imag)
-                #the condition midy!=slope*midx alone was causing trouble for z1.real==z2.real
-                if midy != slope * midx or self.z1.real==self.z2.real:
-                    delta = -4 * (midy - midx * slope) ** 2 + 4 * (1 + slope ** 2)
-                    x1=(-2 * slope * (midy - slope * midx) + math.sqrt(delta)) / (2 * (1 + slope ** 2))
-                    y1=midy + slope * (x1 - midx)
-                    x2=(-2 * slope * (midy - slope * midx) - math.sqrt(delta)) / (2 * (1 + slope ** 2))
-                    y2=midy + slope * (x2 - midx)
-                    if math.sqrt(((x1 - midx) ** 2) + ((y1 - midy) ** 2)) < math.sqrt(((x2 - midx) ** 2) + ((y2 - midy) ** 2)):
-                        c=x1+y1*1j
-                    else:
-                        c=x2+y2*1j
-                    r=math.sqrt(((c.real-self.z1.real)**2)+((c.imag-self.z1.imag))**2)  
-                else:
-                    r=-1
-                    c=0+0*1j
-            else:
-                if self.z1.imag == 0:
-                    r=-1
-                    c=0+0*1j
-                else:
-                    x=midx
-                    y=math.sqrt(1-x**2)
-                    if y*self.z1.imag<0:
-                        y=-y
-                    c=x+y*1j
-                    r=math.sqrt(((c.real-self.z1.real)**2)+((c.imag-self.z1.imag))**2)
-        return r,c
-                    
+        x1=self.z1.real
+        y1=self.z1.imag
+        x2=self.z2.real
+        y2=self.z2.imag
+        if x1 * y2 != x2 * y1:
+            x = (x1**2 * y2 - x2**2 * y1 + y1**2 * y2 - y1 * y2**2 + y2 - y1) / (2 * (x1 * y2 - x2 * y1))
+            y = (x1**2 * x2 - x1 * x2**2 + y1**2 * x2 - x1 * y2**2 + x2 - x1) / (2 * (x2 * y1 - x1 * y2))
+            c = x + y * 1j
+            r = math.sqrt(normsq(self.z1-c))
+            return r, c
+        else:
+            return -1, 0+0*1j
                                                   
     def get_ideal_endpoints(self):
         ''' returns the ideal endpoints of the geodesic extending the segment '''
@@ -57,20 +33,22 @@ class H2_segment:
         if r==-1 and c==0+0*1j:
             z1=self.z1
             z2=self.z2
-            if z1.real!=z2.real:
-                delta=4*(z2.real-z1.real)**2*((z2.real-z1.real)**2+(z2.imag-z1.imag)**2-(z1.real*z2.imag-z1.imag*z2.real)**2)
-                x1=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)+math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
-                x2=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)-math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
-                y1=z1.imag+(x1-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
-                y2=z1.imag+(x2-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
-
+            x1 = z1.real / math.sqrt(normsq(z1))
+            x2 = -x1
+            y1 = z1.imag / math.sqrt(normsq(z1))
+            y2 = -y1
         else:
             a=c.real
             b=c.imag
-            y1=(b*(2-r**2)+a*r*math.sqrt(4-r**2))/2
-            y2=(b*(2-r**2)-a*r*math.sqrt(4-r**2))/2
-            x1=(a*(2-r**2)-b*r*math.sqrt(4-r**2))/2
-            x2=(a*(2-r**2)+b*r*math.sqrt(4-r**2))/2
+            if a != 0:
+                y1 = (b + a * r) / (r**2 + 1)
+                y2 = (b - a * r) / (r**2 + 1)
+                x1 = (1 - b * y1) / a
+                x2 = (1 - b * y2) / a
+            else:
+                y1 = y2 = 1 / b
+                x1 = math.sqrt(1 - 1 / b**2)
+                x2 = -x1
         e1=x1+y1*1j
         e2=x2+y2*1j
         return e1, e2

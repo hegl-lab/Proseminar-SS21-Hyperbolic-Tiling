@@ -76,18 +76,19 @@ class Canvas:
         self.draw_point(z1,"red")
         self.draw_point(z2,"red")
         #find the Euclidean circle that includes z1 and z2 and is centered on the boundary of the disk
-        r, c=segment.get_circle()
-        #get the corresponding ideal endpoints
-        e1, e2=segment.get_ideal_endpoints()
-        self.draw_point(e1,"blue")
-        self.draw_point(e2,"blue")
-        #2 cases
-        # case 1: the euclidean line connecting z1 and z2 is a diameter-->r==-1 and c=0
-        # case 2: the euclidean line connecting z1 and z2 is not a diameter
-        if r==-1 and c==0+0*1j:
-            self.draw_segment(e1, e2, color)
-        else:
-            self.draw_circle_arc(c, r, e1, e2, color)
+        if z1!=z2:
+            r, c=segment.get_circle()
+            #get the corresponding ideal endpoints
+            e1, e2=segment.get_ideal_endpoints()
+            self.draw_point(e1,"blue")
+            self.draw_point(e2,"blue")
+            #2 cases
+            # case 1: the euclidean line connecting z1 and z2 is a diameter-->r==-1 and c=0
+            # case 2: the euclidean line connecting z1 and z2 is not a diameter
+            if r==-1 and c==0+0*1j:
+                self.draw_segment(e1, e2, color)
+            else:
+                self.draw_circle_arc(c, r, e1, e2, color)
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''

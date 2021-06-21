@@ -33,8 +33,6 @@ class H2_segment:
         if r==-1 and c==0+0*1j:
             z1=self.z1
             z2=self.z2
-            if z1==z2:
-                return 0+0*1j,0+0*1j
             if z1==0+0*1j:
                 z=z2
             else:

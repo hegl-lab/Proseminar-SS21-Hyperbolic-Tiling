@@ -67,6 +67,9 @@ class H2_reflection:
 
 def H2_midpoint(z1, z2):
     ''' Computes the hyperbolic midpoint of two points in the Poincaré disk model '''
+    if z1 == z2:
+        return z1
+
     fz2 = H2_midpoint_help_function(z1, z2) #f
     r1 = math.sqrt(normsq(fz2)) # euclidean length of f(z2)
     hyp_dist = H2_distance_on_diameter(r1) # hyperbolic distance from 0 = f(z1) to f(z2)

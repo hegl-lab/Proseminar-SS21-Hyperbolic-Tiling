@@ -19,7 +19,7 @@ class Window:
 
 if __name__ == "__main__":
     main_window = Window()
-    z1=0.1+0.7j
+    z1=0.0+0.0j
     z2=-0.1+0.7j
     main_window.canvas.draw_H2_segment(z1, z2, "green")
     z1=0.5+0.5j

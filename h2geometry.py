@@ -33,9 +33,13 @@ class H2_segment:
         if r==-1 and c==0+0*1j:
             z1=self.z1
             z2=self.z2
-            x1 = z1.real / math.sqrt(normsq(z1))
+            if z1==0+0*1j:
+                z=z2
+            else:
+                z=z1
+            x1 = z.real / math.sqrt(normsq(z))
             x2 = -x1
-            y1 = z1.imag / math.sqrt(normsq(z1))
+            y1 = z.imag / math.sqrt(normsq(z))
             y2 = -y1
         else:
             a=c.real

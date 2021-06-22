@@ -62,11 +62,32 @@ class H2_reflection:
     def __init__(self, s : H2_segment):
         ''' Initialization '''
         self.s = s
-        # complete
 
     def reflect(self, z):
         ''' Computes the reflection of a point '''
-        # complete
+        r, c = self.s.get_circle()
+        if not (r == -1 and c == 0 + 0 * 1j):
+            a = c.real
+            b = c.imag
+            x = z.real
+            y = z.imag
+            x_ref = a + (x - a) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+            y_ref = b + (y - b) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+            z_ref = x_ref + y_ref * 1j
+            return z_ref
+        else:
+            x = z.real
+            y = z.imag
+            e1, e2 = self.s.get_ideal_endpoints()
+            slope = (e2.imag - e1.imag) / (e2.real - e1.real)
+            if slope != 0:
+                x_ref = (2 * (y - e1.imag + slope * e1.real) - x * (slope - 1 / slope)) / (slope + 1 / slope)
+                y_ref = (2 * (e1.imag / slope + x - e1.real) + y * (slope - 1 / slope)) / (slope + 1 / slope)
+            else:
+                x_ref = x
+                y_ref = -y
+            return x_ref + y_ref * 1j
+        
 
 
 def H2_midpoint(z1, z2):

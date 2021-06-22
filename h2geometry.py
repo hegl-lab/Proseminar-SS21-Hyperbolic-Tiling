@@ -121,3 +121,27 @@ def H2_distance_on_diameter(r):
 def eucl_dist_from_hyp_dist(h):
     """Returns the euclidean distance on euclidean straight line that gives the hyperbolic distance h."""
     return (-1 + math.e**h) / (1 + math.e**h) 
+
+def iso_map(z,a):
+    ''' Computes an isometry '''
+    q = a.conjugate()
+    print(q,z)
+    r = (z-a)/(1-q*z)
+    return r
+
+def get_angle(z1,z2,z12,z22):
+    ''' Gives you the smallest angle between two line segments defined by points'''
+    a = iso_map(z1,z1)
+    b = iso_map(z2,z1)
+    c = iso_map(z12,z12)
+    d = iso_map(z22,z12)
+    slope1 = (a.real - b.real) / (b.imag - a.imag)
+    print(slope1)
+    slope2 = (c.real - d.real) / (d.imag - c.imag)
+    
+    tan_alpha = abs((slope1 - slope2)/(1 + slope1 * slope2))
+    rad_angle = np.atan(tan_alpha)
+    if(rad_angle > (pi/2)):
+        return pi - rad_angle
+    else: 
+        return rad_angle    

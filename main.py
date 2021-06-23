@@ -10,10 +10,10 @@ class Window:
         self.top.title("Hyperbolic tilings")
         self.canvas = Canvas(self.top)
         self.top.bind("<Button-1>", self.mouse_click)
-    
+
     def mouse_click(self, event):
         self.canvas.mouse_click(event)
-        
+
     def run(self):
         self.top.mainloop()
 
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     main_window = Window()
     z1=0.3+0.1j
     z2=-0.1-0.2j
-    
+
     main_window.canvas.draw_H2_segment(z1, z2, "green")
     z1=0.5+0.5j
     z2=-0.5-0.5j
@@ -38,3 +38,4 @@ if __name__ == "__main__":
     z = [z21,z22,z23,z24]
     main_window.canvas.draw_H2_polygon(z, "magenta")
     main_window.run()
+

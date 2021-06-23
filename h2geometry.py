@@ -18,11 +18,13 @@ class H2_segment:
         # return c, r
         norm_M_z1 = normsq(self.z1)
         length_A_S = math.sqrt(1 - (norm_M_z1) ** 2)
-        senk_A = -self.z1.imag + self.z1.real * j
+        senk_A = 0 + 0*1j
+        senk_A.real = -self.z1.imag
+        senk_A.imag = + self.z1.real
         senk_A.real = senk_A.real / (normsq(senk_A) * length_A_S)
         senk_A.imag = senk_A.imag / (normsq(senk_A) * length_A_S)
         S = self.z1 + senk_A
-        s = -S.real +S.imag * j
+        s = -S.real +S.imag * 1j
         x = S / (self.z1 - (s))
         A = S + (x * (s))
         K1 = self.z1 + 0.5 * normsq(A-self.z1)
@@ -68,6 +70,18 @@ class H2_reflection:
     def reflect(self, z):
         ''' Computes the reflection of a point '''
         # complete
+        res = 0 + 0*1j
+        #isometry to the halfplane
+        res.real = (2 * z.imag)/((z.real)**2+2*(z.real)+1+(z.imag)**2)
+        res.imag = -((z.imag)**2-1+(z.real)**2)/((z.real)**2+2*(z.real)+1+(z.imag)**2)
+        #reflection in the halfplane model
+        res.real = (res.real)/((res.real)**2 + (res.imag)**2)
+        res.imag = (res.imag)/((res.real)**2 + (res.imag)**2)
+        #isometry back to the disc model
+        res.real = (-(res.real)**2-(res.imag)**2+1)/((res.real)**2-(res.imag)**2-2*(res.imag)-1)
+        res.imag = (-2*(res.imag)+(res.real))/((res.real)**2-(res.imag)**2-2*(res.imag)-1)
+        return res
+    
 
 
 def H2_midpoint(z1, z2):

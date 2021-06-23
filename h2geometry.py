@@ -10,45 +10,21 @@ class H2_segment:
         self.z1=z1
         self.z2=z2
         # complete
-            
-            
+
     def get_circle(self):
         ''' returns the Euclidean circle that the hyperbolic segment is an arc of '''
-        # complete
-        # return c, r
-        midx = (self.z1.real + self.z2.real) / 2
-        midy = (self.z1.imag + self.z2.imag) / 2
-        if normsq(self.z1)<=1 and normsq(self.z2)<=1:
-            if self.z2.imag != self.z1.imag:
-                slope = (self.z1.real - self.z2.real) / (self.z2.imag - self.z1.imag)
-                #the condition midy!=slope*midx alone was causing trouble for z1.real==z2.real
-                if midy != slope * midx or self.z1.real==self.z2.real:
-                    delta = -4 * (midy - midx * slope) ** 2 + 4 * (1 + slope ** 2)
-                    x1=(-2 * slope * (midy - slope * midx) + math.sqrt(delta)) / (2 * (1 + slope ** 2))
-                    y1=midy + slope * (x1 - midx)
-                    x2=(-2 * slope * (midy - slope * midx) - math.sqrt(delta)) / (2 * (1 + slope ** 2))
-                    y2=midy + slope * (x2 - midx)
-                    if math.sqrt(((x1 - midx) ** 2) + ((y1 - midy) ** 2)) < math.sqrt(((x2 - midx) ** 2) + ((y2 - midy) ** 2)):
-                        c=x1+y1*1j
-                    else:
-                        c=x2+y2*1j
-                    r=math.sqrt(((c.real-self.z1.real)**2)+((c.imag-self.z1.imag))**2)  
-                else:
-                    r=-1
-                    c=0+0*1j
-            else:
-                if self.z1.imag == 0:
-                    r=-1
-                    c=0+0*1j
-                else:
-                    x=midx
-                    y=math.sqrt(1-x**2)
-                    if y*self.z1.imag<0:
-                        y=-y
-                    c=x+y*1j
-                    r=math.sqrt(((c.real-self.z1.real)**2)+((c.imag-self.z1.imag))**2)
-        return r,c
-                    
+        x1=self.z1.real
+        y1=self.z1.imag
+        x2=self.z2.real
+        y2=self.z2.imag
+        if x1 * y2 != x2 * y1:
+            x = (x1**2 * y2 - x2**2 * y1 + y1**2 * y2 - y1 * y2**2 + y2 - y1) / (2 * (x1 * y2 - x2 * y1))
+            y = (x1**2 * x2 - x1 * x2**2 + y1**2 * x2 - x1 * y2**2 + x2 - x1) / (2 * (x2 * y1 - x1 * y2))
+            c = x + y * 1j
+            r = math.sqrt(normsq(self.z1-c))
+            return r, c
+        else:
+            return -1, 0+0*1j
                                                   
     def get_ideal_endpoints(self):
         ''' returns the ideal endpoints of the geodesic extending the segment '''
@@ -57,20 +33,26 @@ class H2_segment:
         if r==-1 and c==0+0*1j:
             z1=self.z1
             z2=self.z2
-            if z1.real!=z2.real:
-                delta=4*(z2.real-z1.real)**2*((z2.real-z1.real)**2+(z2.imag-z1.imag)**2-(z1.real*z2.imag-z1.imag*z2.real)**2)
-                x1=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)+math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
-                x2=(2*(z2.imag-z1.imag)*(z1.real*z2.imag-z1.imag*z2.real)-math.sqrt(delta))/(2*(z2.real-z1.real)**2+2*(z2.imag-z1.imag)**2)
-                y1=z1.imag+(x1-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
-                y2=z1.imag+(x2-z1.real)*(z2.imag-z1.imag)/(z2.real-z1.real)
-
+            if z1==0+0*1j:
+                z=z2
+            else:
+                z=z1
+            x1 = z.real / math.sqrt(normsq(z))
+            x2 = -x1
+            y1 = z.imag / math.sqrt(normsq(z))
+            y2 = -y1
         else:
             a=c.real
             b=c.imag
-            y1=(b*(2-r**2)+a*r*math.sqrt(4-r**2))/2
-            y2=(b*(2-r**2)-a*r*math.sqrt(4-r**2))/2
-            x1=(a*(2-r**2)-b*r*math.sqrt(4-r**2))/2
-            x2=(a*(2-r**2)+b*r*math.sqrt(4-r**2))/2
+            if a != 0:
+                y1 = (b + a * r) / (r**2 + 1)
+                y2 = (b - a * r) / (r**2 + 1)
+                x1 = (1 - b * y1) / a
+                x2 = (1 - b * y2) / a
+            else:
+                y1 = y2 = 1 / b
+                x1 = math.sqrt(1 - 1 / b**2)
+                x2 = -x1
         e1=x1+y1*1j
         e2=x2+y2*1j
         return e1, e2
@@ -80,13 +62,86 @@ class H2_reflection:
     def __init__(self, s : H2_segment):
         ''' Initialization '''
         self.s = s
-        # complete
 
     def reflect(self, z):
         ''' Computes the reflection of a point '''
-        # complete
+        r, c = self.s.get_circle()
+        if not (r == -1 and c == 0 + 0 * 1j):
+            a = c.real
+            b = c.imag
+            x = z.real
+            y = z.imag
+            x_ref = a + (x - a) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+            y_ref = b + (y - b) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+            z_ref = x_ref + y_ref * 1j
+            return z_ref
+        else:
+            x = z.real
+            y = z.imag
+            e1, e2 = self.s.get_ideal_endpoints()
+            slope = (e2.imag - e1.imag) / (e2.real - e1.real)
+            if slope != 0:
+                x_ref = (2 * (y - e1.imag + slope * e1.real) - x * (slope - 1 / slope)) / (slope + 1 / slope)
+                y_ref = (2 * (e1.imag / slope + x - e1.real) + y * (slope - 1 / slope)) / (slope + 1 / slope)
+            else:
+                x_ref = x
+                y_ref = -y
+            return x_ref + y_ref * 1j
+        
 
 
 def H2_midpoint(z1, z2):
     ''' Computes the hyperbolic midpoint of two points in the Poincaré disk model '''
-    # complete
+    if z1 == z2:
+        return z1
+
+    fz2 = H2_midpoint_help_function(z1, z2) #f
+    r1 = math.sqrt(normsq(fz2)) # euclidean length of f(z2)
+    hyp_dist = H2_distance_on_diameter(r1) # hyperbolic distance from 0 = f(z1) to f(z2)
+    
+    #find midpoint between f(z1) and f(z2)
+    half_hyp_dist = hyp_dist / 2 
+    r2 = eucl_dist_from_hyp_dist(half_hyp_dist)
+    m2 = r2 / r1 * fz2
+
+    return H2_midpoint_inverse_help_function(z1, m2)
+
+def H2_midpoint_help_function(z1, z):
+    """Sends z1 to 0 and z somewhere else. This is an isometry"""
+    return (z - z1) / (1 - np.conj(z1) * z)
+
+def H2_midpoint_inverse_help_function(z1, z):
+    """Sends 0 to z1. This is an isometry and the inverse of the other help function."""
+    return (z + z1) / (1 + np.conj(z1)*z)
+
+def H2_distance_on_diameter(r):
+    """Returns the hyperbolic distance between 0 and some point with euclidean distance r."""
+    return math.log((1 + r) / (1 - r))
+
+def eucl_dist_from_hyp_dist(h):
+    """Returns the euclidean distance on euclidean straight line that gives the hyperbolic distance h."""
+    return (-1 + math.e**h) / (1 + math.e**h) 
+
+def iso_map(z,a):
+    ''' Computes an isometry '''
+    q = a.conjugate()
+    print(q,z)
+    r = (z-a)/(1-q*z)
+    return r
+
+def get_angle(z1,z2,z12,z22):
+    ''' Gives you the smallest angle between two line segments defined by points'''
+    a = iso_map(z1,z1)
+    b = iso_map(z2,z1)
+    c = iso_map(z12,z12)
+    d = iso_map(z22,z12)
+    slope1 = (a.real - b.real) / (b.imag - a.imag)
+    print(slope1)
+    slope2 = (c.real - d.real) / (d.imag - c.imag)
+    
+    tan_alpha = abs((slope1 - slope2)/(1 + slope1 * slope2))
+    rad_angle = np.atan(tan_alpha)
+    if(rad_angle > (pi/2)):
+        return pi - rad_angle
+    else: 
+        return rad_angle    

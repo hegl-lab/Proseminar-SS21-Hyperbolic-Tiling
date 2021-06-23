@@ -88,7 +88,7 @@ class Canvas:
             self.draw_point(c,"purple")
             #self.draw_segment(z1, c, "green")
             #self.draw_segment(z2, c, "green")
-            self.draw_circle_arc(c, r, e1, e2, color)
+            self.draw_circle_arc(c, r, z1, z2, color)
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''

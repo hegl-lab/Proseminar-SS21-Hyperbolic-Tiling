@@ -8,45 +8,37 @@ from h2geometry import H2_segment, H2_reflection
 
 def run_tessellation_program():
     first_window = tkinter.Tk()
-    first_window.title("p, q, r")
-    #Get p, q and r 
+    first_window.title("Schwarz triangle tessellation")
+    
+    #Make boxes for writing p, q and r.
     p = enter_pqr(first_window, "p")
     q = enter_pqr(first_window, "q")
     r = enter_pqr(first_window, "r")
-
-#     p = p.get()
-#     q = q.get()
-#     r = r.get()'
-
 
     def f():
         p2 = p.get()
         q2 = q.get()
         r2 = r.get()
-        print("p = " + p2 + "\n" 
-        + "q = " + q2 + "\n" 
-        + "r = " + r2 + ".")
-        first_window.destroy
+        #This test has to actually do something TODO
+        if not float(p2) > 2:
+            show_not_greater_than_two_error(first_window, "p")   
+        run_main_window_tessellation(float(p2), float(q2), float(r2))
 
     printButton = tkinter.Button(first_window,text = "Enter", command = f)
     printButton.pack()
+    # printButton = tkinter.Button(first_window,text = "Exit", command = first_window.destroy)
+    # printButton.pack()
 
-    #somehow transfer this information to the next window.
-
-    #Run the first window
     first_window.mainloop()
 
-    print(p + q + r)
-
-    #Make the main window
+def run_main_window_tessellation(p,q,r):
     main_window = Window()
 
-    z1 = p * 0.1 + p * 0.1j
-    z2 = q * 0.1 + q * 0.1j
+    # Just a test to see if stuff works. p,q and r shouldn't be greater than 10.
+    z1 = - p * 0.1 + p * 0.1j
+    z2 = q * 0.1 - q * 0.1j
     z3 = r * 0.1 + r * 0.1j
-    # z1 = 0.5 + 0.5j
-    # z2 = -0.5 + 0.5j 
-    # z3 = -0.2 - 0.7j
+
     main_window.canvas.draw_H2_triangle(z1,z2,z3, "cyan")
 
     # schwarz = SchwarzTriangle(p,q,r)
@@ -63,8 +55,7 @@ def enter_pqr(window, name):
     var = tkinter.StringVar()
     pqr = tkinter.Entry(frame, textvariable=var, exportselection=0)
     pqr.pack(side="left")
-    # if not float(pqr.get()) > 2:
-    #     show_not_greater_than_two_error(frame, name)
+    
     return pqr
     
 def show_not_greater_than_two_error(window, name):
@@ -100,6 +91,20 @@ def test_reflect_triangle(window):
     z13 = -0.9 + 0.1j
     reflect_triangle(window, s_ref, z11, z12, z13)
 
+def test_draw_triangle_and_polygon(window):
+        # Test for draw_H2_triangle
+    z11 = 0.5 + 0.5j
+    z12 = -0.5 + 0.5j 
+    z13 = -0.2 - 0.7j
+    window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
+
+    # Test for draw_H2_polygon
+    z21 = 0.2 + 0.2j
+    z22 = -0.2 + 0.2j 
+    z23 = -0.2 - 0.2j
+    z24 = 0.2 - 0.2j
+    z = [z21,z22,z23,z24]
+    window.canvas.draw_H2_polygon(z, "magenta")
 
 class Window:
     def __init__(self):
@@ -127,17 +132,6 @@ if __name__ == "__main__":
     #------------------------uncomment the next line for testing
     #test_reflect_triangle(main_window)
     
-    # Test for draw_H2_triangle
-    z11 = 0.5 + 0.5j
-    z12 = -0.5 + 0.5j 
-    z13 = -0.2 - 0.7j
-    #main_window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
+    #test_draw_triangle_and_polygon(main_window)
 
-    # Test for draw_H2_polygon
-    z21 = 0.2 + 0.2j
-    z22 = -0.2 + 0.2j 
-    z23 = -0.2 - 0.2j
-    z24 = 0.2 - 0.2j
-    z = [z21,z22,z23,z24]
-    #main_window.canvas.draw_H2_polygon(z, "magenta")
     #main_window.run()

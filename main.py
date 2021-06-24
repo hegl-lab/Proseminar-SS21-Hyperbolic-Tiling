@@ -1,9 +1,75 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from schwarztriangle import SchwarzTriangle
 from canvas import Canvas
 import tkinter
 from h2geometry import H2_segment, H2_reflection
+
+def run_tessellation_program():
+    first_window = tkinter.Tk()
+    first_window.title("p, q, r")
+    #Get p, q and r 
+    p = enter_pqr(first_window, "p")
+    q = enter_pqr(first_window, "q")
+    r = enter_pqr(first_window, "r")
+
+#     p = p.get()
+#     q = q.get()
+#     r = r.get()'
+
+
+    def f():
+        p2 = p.get()
+        q2 = q.get()
+        r2 = r.get()
+        print("p = " + p2 + "\n" 
+        + "q = " + q2 + "\n" 
+        + "r = " + r2 + ".")
+        first_window.destroy
+
+    printButton = tkinter.Button(first_window,text = "Enter", command = f)
+    printButton.pack()
+
+    #somehow transfer this information to the next window.
+
+    #Run the first window
+    first_window.mainloop()
+
+    print(p + q + r)
+
+    #Make the main window
+    main_window = Window()
+
+    z1 = p * 0.1 + p * 0.1j
+    z2 = q * 0.1 + q * 0.1j
+    z3 = r * 0.1 + r * 0.1j
+    # z1 = 0.5 + 0.5j
+    # z2 = -0.5 + 0.5j 
+    # z3 = -0.2 - 0.7j
+    main_window.canvas.draw_H2_triangle(z1,z2,z3, "cyan")
+
+    # schwarz = SchwarzTriangle(p,q,r)
+    # schwarz.make_tessellation()
+
+    main_window.run()
+
+
+def enter_pqr(window, name):
+    frame = tkinter.Frame(window)
+    frame.pack()
+    label = tkinter.Label(frame, text="Please write " + name + ": ")
+    label.pack(side="left")
+    var = tkinter.StringVar()
+    pqr = tkinter.Entry(frame, textvariable=var, exportselection=0)
+    pqr.pack(side="left")
+    # if not float(pqr.get()) > 2:
+    #     show_not_greater_than_two_error(frame, name)
+    return pqr
+    
+def show_not_greater_than_two_error(window, name):
+    label = tkinter.Label(window,text= name + " must be > 2.", fg = "red")
+    label.pack(side="left")
 
 def test_H2_reflection(window):
     #Strange behaviour when z3 is on the geodesic between z1 and z2
@@ -49,7 +115,9 @@ class Window:
         self.top.mainloop()
 
 if __name__ == "__main__":
-    main_window = Window()
+    run_tessellation_program()
+
+    #main_window = Window()
 
     #Test for H2_reflection
     #------------------------uncomment the next line for testing
@@ -63,7 +131,7 @@ if __name__ == "__main__":
     z11 = 0.5 + 0.5j
     z12 = -0.5 + 0.5j 
     z13 = -0.2 - 0.7j
-    main_window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
+    #main_window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
 
     # Test for draw_H2_polygon
     z21 = 0.2 + 0.2j
@@ -71,5 +139,5 @@ if __name__ == "__main__":
     z23 = -0.2 - 0.2j
     z24 = 0.2 - 0.2j
     z = [z21,z22,z23,z24]
-    main_window.canvas.draw_H2_polygon(z, "magenta")
-    main_window.run()
+    #main_window.canvas.draw_H2_polygon(z, "magenta")
+    #main_window.run()

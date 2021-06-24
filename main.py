@@ -20,6 +20,7 @@ def run_tessellation_program():
         q2 = q.get()
         r2 = r.get()
         #This test has to actually do something TODO
+        #It should also work for q2 and r2
         if not float(p2) > 2:
             show_not_greater_than_two_error(first_window, "p")   
         run_main_window_tessellation(float(p2), float(q2), float(r2))

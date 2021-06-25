@@ -147,4 +147,25 @@ def get_angle(z1,z2,z12,z22):
     if(rad_angle > (pi/2)):
         return pi - rad_angle
     else: 
-        return rad_angle    
+        return rad_angle
+
+
+
+def get_barycenter(z1,z2,z3):
+    #send z1 to 0
+    a = H2_midpoint_isometry(z1,z2)
+    b = H2_midpoint_isometry(z1,z3)
+    #area of the triangle
+    alpha = get_angle(0,a,0,b)
+    beta = get_angle(a,0,a,b)
+    gamma = get_angle(b,0,b,a)
+    area = np.pi - (alpha+beta+gamma)
+    A = area/3
+    #get barycenter
+    z = (a* (1- math.e**(-1j*A)- b*(1-math.e**(1j*A)))) / ((np.conj(a)*b*math.e**(1j*A))-(a*np.conj(b)+math.e**(-1j*A)))
+
+    return(H2_midpoint_inverse_isometry(z1,z))
+
+
+
+

@@ -95,31 +95,34 @@ def H2_midpoint(z1, z2):
     if z1 == z2:
         return z1
 
-    fz2 = H2_midpoint_help_function(z1, z2) #f
-    r1 = math.sqrt(normsq(fz2)) # euclidean length of f(z2)
-    hyp_dist = H2_distance_on_diameter(r1) # hyperbolic distance from 0 = f(z1) to f(z2)
+    fz2 = H2_midpoint_isometry(z1, z2) #f
+    
+    #find hyperbolic distance from 0 = f(z1) to f(z2)
+    r1 = math.sqrt(normsq(fz2)) #euclidean distance from 0 to f(z2)
+    hyp_dist = hyp_dist_from_eucl_dist(r1) 
     
     #find midpoint between f(z1) and f(z2)
     half_hyp_dist = hyp_dist / 2 
     r2 = eucl_dist_from_hyp_dist(half_hyp_dist)
-    m2 = r2 / r1 * fz2
+    fm = r2 / r1 * fz2
 
-    return H2_midpoint_inverse_help_function(z1, m2)
+    return H2_midpoint_inverse_isometry(z1, fm)
 
-def H2_midpoint_help_function(z1, z):
-    """Sends z1 to 0 and z somewhere else. This is an isometry"""
+def H2_midpoint_isometry(z1, z):
+    """Sends z1 to 0 and z somewhere else."""
     return (z - z1) / (1 - np.conj(z1) * z)
 
-def H2_midpoint_inverse_help_function(z1, z):
-    """Sends 0 to z1. This is an isometry and the inverse of the other help function."""
+def H2_midpoint_inverse_isometry(z1, z):
+    """Sends 0 to z1. This is the inverse of H2_midpoint_isometry."""
     return (z + z1) / (1 + np.conj(z1)*z)
 
-def H2_distance_on_diameter(r):
+def hyp_dist_from_eucl_dist(r):
     """Returns the hyperbolic distance between 0 and some point with euclidean distance r."""
     return math.log((1 + r) / (1 - r))
 
 def eucl_dist_from_hyp_dist(h):
-    """Returns the euclidean distance on euclidean straight line that gives the hyperbolic distance h."""
+    """Returns the euclidean distance that gives the hyperbolic distance h.
+    This only works when one point is at 0."""
     return (-1 + math.e**h) / (1 + math.e**h) 
 
 def iso_map(z,a):

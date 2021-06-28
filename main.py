@@ -51,25 +51,25 @@ class Window:
 if __name__ == "__main__":
     main_window = Window()
 
-    #Test for H2_reflection
-    #------------------------uncomment the next line for testing
-    #test_H2_reflection(main_window)
+    # Test for H2_reflection
+    # ------------------------uncomment the next line for testing
+    test_H2_reflection(main_window)
 
     #Test for reflecting a triangle
     #------------------------uncomment the next line for testing
     #test_reflect_triangle(main_window)
     
     # Test for draw_H2_triangle
-    z11 = 0.5 + 0.5j
-    z12 = -0.5 + 0.5j 
-    z13 = -0.2 - 0.7j
-    main_window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
+    # z11 = 0.5 + 0.5j
+    # z12 = -0.5 + 0.5j 
+    # z13 = -0.2 - 0.7j
+    # main_window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
 
-    # Test for draw_H2_polygon
-    z21 = 0.2 + 0.2j
-    z22 = -0.2 + 0.2j 
-    z23 = -0.2 - 0.2j
-    z24 = 0.2 - 0.2j
-    z = [z21,z22,z23,z24]
-    main_window.canvas.draw_H2_polygon(z, "magenta")
+    # # Test for draw_H2_polygon
+    # z21 = 0.2 + 0.2j
+    # z22 = -0.2 + 0.2j 
+    # z23 = -0.2 - 0.2j
+    # z24 = 0.2 - 0.2j
+    # z = [z21,z22,z23,z24]
+    # main_window.canvas.draw_H2_polygon(z, "magenta")
     main_window.run()

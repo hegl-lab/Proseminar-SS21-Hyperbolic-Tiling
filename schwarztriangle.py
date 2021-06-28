@@ -1,8 +1,7 @@
 import math
 
 class SchwarzTriangle:
-    """This class implements a tessellation of the hyperbolic plane by Schwarz triangles.
-    Feel free to remove this if it is unnecessary, or to change names of things. """
+    """This class implements a tessellation of the hyperbolic plane by Schwarz triangles."""
 
     def __init__(self, p, q, r):
         assert p > 2 and q > 2 and r > 2

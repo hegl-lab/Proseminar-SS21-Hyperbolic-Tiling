@@ -125,8 +125,8 @@ if __name__ == "__main__":
 
     #main_window = Window()
 
-    #Test for H2_reflection
-    #------------------------uncomment the next line for testing
+    # Test for H2_reflection
+    # ------------------------uncomment the next line for testing
     #test_H2_reflection(main_window)
 
     #Test for reflecting a triangle

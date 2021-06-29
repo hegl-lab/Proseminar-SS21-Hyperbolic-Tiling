@@ -12,8 +12,5 @@ class SchwarzTriangle:
 
     def make_triangle():
         """Makes a triangle with the given angles."""
-        #TODO
 
-    def make_tessellation():
-        """Makes a tessellation by reflecting the triangle."""
-        #TODO
+        

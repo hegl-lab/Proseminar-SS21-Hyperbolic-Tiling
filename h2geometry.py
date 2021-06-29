@@ -2,14 +2,16 @@ from tools import normsq
 import numpy as np
 import math
 
-
 class H2_segment:
     ''' This class implements a hyperbolic segment or geodesic in the Poincaré disk model '''
 
     def __init__(self, z1, z2):
-        self.z1=z1
-        self.z2=z2
-        # complete
+        if math.sqrt(normsq(z1))<=1 and math.sqrt(normsq(z2))<=1:
+            self.z1=z1
+            self.z2=z2
+        else:
+            self.z1=0+0*1j
+            self.z2=self.z1
 
     def get_circle(self):
         ''' returns the Euclidean circle that the hyperbolic segment is an arc of '''
@@ -33,10 +35,12 @@ class H2_segment:
         if r==-1 and c==0+0*1j:
             z1=self.z1
             z2=self.z2
-            if z1==0+0*1j:
+            if normsq(z1)==0:
                 z=z2
             else:
                 z=z1
+            if normsq(z)==0 or z1==z2:
+                return 0+0*1j, 0+0*1j
             x1 = z.real / math.sqrt(normsq(z))
             x2 = -x1
             y1 = z.imag / math.sqrt(normsq(z))
@@ -71,23 +75,41 @@ class H2_reflection:
             b = c.imag
             x = z.real
             y = z.imag
-            x_ref = a + (x - a) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
-            y_ref = b + (y - b) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+            if x==a and y==b:
+                x_ref = x
+                y_ref = y
+            else:
+                x_ref = a + (x - a) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+                y_ref = b + (y - b) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
+            x_ref = round(x_ref, 2)
+            y_ref = round(y_ref, 2)
             z_ref = x_ref + y_ref * 1j
             return z_ref
         else:
             x = z.real
             y = z.imag
             e1, e2 = self.s.get_ideal_endpoints()
-            slope = (e2.imag - e1.imag) / (e2.real - e1.real)
-            if slope != 0:
-                x_ref = (2 * (y - e1.imag + slope * e1.real) - x * (slope - 1 / slope)) / (slope + 1 / slope)
-                y_ref = (2 * (e1.imag / slope + x - e1.real) + y * (slope - 1 / slope)) / (slope + 1 / slope)
+            if e2.real - e1.real!=0:
+                slope = (e2.imag - e1.imag) / (e2.real - e1.real)
+                if slope != 0:
+                    x_ref = (2 * (y - e1.imag + slope * e1.real) - x * (slope - 1 / slope)) / (slope + 1 / slope)
+                    y_ref = (2 * (e1.imag / slope + x - e1.real) + y * (slope - 1 / slope)) / (slope + 1 / slope)
+                    x_ref = round(x_ref, 2)
+                    y_ref = round(y_ref, 2)
+                else:
+                    x_ref = x
+                    y_ref = -y
             else:
-                x_ref = x
-                y_ref = -y
+                x_ref = -x
+                y_ref = y
             return x_ref + y_ref * 1j
-        
+
+
+def reflect_triangle(z1, z2, z3, s):
+        z1_ref=s.reflect(z1)
+        z2_ref=s.reflect(z2)
+        z3_ref=s.reflect(z3)
+        return z1_ref, z2_ref, z3_ref       
 
 
 def H2_midpoint(z1, z2):

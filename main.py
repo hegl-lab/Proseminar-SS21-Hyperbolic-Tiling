@@ -4,7 +4,7 @@
 from schwarztriangle import SchwarzTriangle
 from canvas import Canvas
 import tkinter
-from h2geometry import H2_segment, H2_reflection
+from h2geometry import *
 
 def run_tessellation_program():
     first_window = tkinter.Tk()
@@ -39,8 +39,7 @@ def run_main_window_tessellation(p,q,r):
     z1 = - p * 0.1 + p * 0.1j
     z2 = q * 0.1 - q * 0.1j
     z3 = r * 0.1 + r * 0.1j
-
-    main_window.canvas.draw_H2_triangle(z1,z2,z3, "cyan")
+    main_window.canvas.make_tessellation(z1, z2, z3)
 
     # schwarz = SchwarzTriangle(p,q,r)
     # schwarz.make_tessellation()
@@ -74,13 +73,6 @@ def test_H2_reflection(window):
     print("z3_ref={}".format(z3_ref))
     window.canvas.draw_H2_segment(z3, z3_ref, "green", complete=False)
 
-def reflect_triangle(window, s, z1, z2, z3):
-    window.canvas.draw_H2_triangle(z1, z2, z3, "orange")
-    z1_ref=s.reflect(z1)
-    z2_ref=s.reflect(z2)
-    z3_ref=s.reflect(z3)
-    window.canvas.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
-
 def test_reflect_triangle(window):
     z1=0.2+0.7j
     z2=-0.5-0.2j
@@ -90,7 +82,9 @@ def test_reflect_triangle(window):
     z11 = 0.1 + 0.9j
     z12 = -0.5 + 0.1j 
     z13 = -0.9 + 0.1j
-    reflect_triangle(window, s_ref, z11, z12, z13)
+    a, b, c = reflect_triangle(s_ref, z11, z12, z13)
+    window.canvas.draw_H2_triangle(a, b, c, "green")
+
 
 def test_draw_triangle_and_polygon(window):
         # Test for draw_H2_triangle
@@ -131,7 +125,7 @@ if __name__ == "__main__":
 
     #Test for reflecting a triangle
     #------------------------uncomment the next line for testing
-    test_reflect_triangle(main_window)
+    #test_reflect_triangle(main_window)
     
     #test_draw_triangle_and_polygon(main_window)
 

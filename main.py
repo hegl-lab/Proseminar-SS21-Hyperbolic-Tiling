@@ -59,7 +59,7 @@ if __name__ == "__main__":
     #------------------------uncomment the next line for testing
     test_reflect_triangle(main_window)
     
-    '''# Test for draw_H2_triangle
+    # Test for draw_H2_triangle
     z11 = 0.5 + 0.5j
     z12 = -0.5 + 0.5j 
     z13 = -0.2 - 0.7j
@@ -71,5 +71,5 @@ if __name__ == "__main__":
     z23 = -0.2 - 0.2j
     z24 = 0.2 - 0.2j
     z = [z21,z22,z23,z24]
-    main_window.canvas.draw_H2_polygon(z, "magenta")'''
+    main_window.canvas.draw_H2_polygon(z, "magenta")
     main_window.run()

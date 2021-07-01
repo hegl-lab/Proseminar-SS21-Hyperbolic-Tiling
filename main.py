@@ -4,7 +4,7 @@
 from schwarztriangle import SchwarzTriangle
 from canvas import Canvas
 import tkinter
-from h2geometry import H2_segment, H2_reflection
+from h2geometry import *
 
 def run_tessellation_program():
     first_window = tkinter.Tk()
@@ -39,8 +39,7 @@ def run_main_window_tessellation(p,q,r):
     z1 = - p * 0.1 + p * 0.1j
     z2 = q * 0.1 - q * 0.1j
     z3 = r * 0.1 + r * 0.1j
-
-    main_window.canvas.draw_H2_triangle(z1,z2,z3, "cyan")
+    main_window.canvas.make_tessellation(z1, z2, z3)
 
     # schwarz = SchwarzTriangle(p,q,r)
     # schwarz.make_tessellation()
@@ -64,33 +63,28 @@ def show_not_greater_than_two_error(window, name):
     label.pack(side="left")
 
 def test_H2_reflection(window):
-    #Strange behaviour when z3 is on the geodesic between z1 and z2
-    z1=0.5-0.4j
-    z2=-0.9-0.1j
+    z1=0.5+0.5j
+    z2=-0.3-0.3j
     window.canvas.draw_H2_segment(z1, z2, "cyan")
     s=H2_segment(z1, z2)
-    z3=0.2+0.2j
+    z3=0.2+0.3j
     s_ref=H2_reflection(s)
     z3_ref=s_ref.reflect(z3)
+    print("z3_ref={}".format(z3_ref))
     window.canvas.draw_H2_segment(z3, z3_ref, "green", complete=False)
 
-def reflect_triangle(window, s, z1, z2, z3):
-    window.canvas.draw_H2_triangle(z1, z2, z3, "orange")
-    z1_ref=s.reflect(z1)
-    z2_ref=s.reflect(z2)
-    z3_ref=s.reflect(z3)
-    window.canvas.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
-
 def test_reflect_triangle(window):
-    z1=0.2+0.2j
+    z1=0.2+0.7j
     z2=-0.5-0.2j
     s=H2_segment(z1, z2)
     window.canvas.draw_H2_segment(z1, z2)
     s_ref=H2_reflection(s)
-    z11 = -0.3 + 0.5j
+    z11 = 0.1 + 0.9j
     z12 = -0.5 + 0.1j 
     z13 = -0.9 + 0.1j
-    reflect_triangle(window, s_ref, z11, z12, z13)
+    a, b, c = reflect_triangle(s_ref, z11, z12, z13)
+    window.canvas.draw_H2_triangle(a, b, c, "green")
+
 
 def test_draw_triangle_and_polygon(window):
         # Test for draw_H2_triangle
@@ -125,8 +119,8 @@ if __name__ == "__main__":
 
     #main_window = Window()
 
-    #Test for H2_reflection
-    #------------------------uncomment the next line for testing
+    # Test for H2_reflection
+    # ------------------------uncomment the next line for testing
     #test_H2_reflection(main_window)
 
     #Test for reflecting a triangle

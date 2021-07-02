@@ -165,9 +165,10 @@ def get_angle(z1,z2,z12,z22):
     slope2 = (c.real - d.real) / (d.imag - c.imag)
     
     tan_alpha = abs((slope1 - slope2)/(1 + slope1 * slope2))
-    rad_angle = np.atan(tan_alpha)
-    if(rad_angle > (pi/2)):
-        return pi - rad_angle
+    #changed np.atan in arctan, maybe its an tan i dont know?
+    rad_angle = np.arctan(tan_alpha)
+    if(rad_angle > (np.pi/2)):
+        return np.pi - rad_angle
     else: 
 #       <<<<<<< HEAD
         return rad_angle

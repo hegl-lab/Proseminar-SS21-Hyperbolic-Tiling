@@ -92,7 +92,8 @@ def test_draw_triangle_and_polygon(window):
     z12 = -0.5 + 0.5j 
     z13 = -0.2 - 0.7j
     window.canvas.draw_H2_triangle(z11, z12, z13, "hotpink")
-
+    #window.canvas.draw_point(get_barycenter(z11,z12,z13), "green")
+    #print(get_barycenter(z11,z12,z13))
     # Test for draw_H2_polygon
     z21 = 0.2 + 0.2j
     z22 = -0.2 + 0.2j 
@@ -114,10 +115,9 @@ class Window:
     def run(self):
         self.top.mainloop()
 
-if __name__ == "__main__":
-    run_tessellation_program()
-
-    #main_window = Window()
+#if __name__ == "__main__":
+   # run_tessellation_program()
+#main_window = Window()
 
     # Test for H2_reflection
     # ------------------------uncomment the next line for testing
@@ -130,3 +130,6 @@ if __name__ == "__main__":
     #test_draw_triangle_and_polygon(main_window)
 
     #main_window.run()
+
+#test for barycenter
+#test_draw_triangle_and_polygon(main_window)

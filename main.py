@@ -39,16 +39,18 @@ def run_main_window_tessellation(p,q,r):
     main_window = Window()
 
     # Just a test to see if stuff works. p,q and r shouldn't be greater than 10.
-    z1 = - p * 0.1 + p * 0.1j
-    z2 = q * 0.1 - q * 0.1j
-    z3 = r * 0.1 + r * 0.1j
-    main_window.canvas.make_tessellation(z1, z2, z3)
+    # z1 = - p * 0.1 + p * 0.1j
+    # z2 = q * 0.1 - q * 0.1j
+    # z3 = r * 0.1 + r * 0.1j
+    # main_window.canvas.make_tessellation(z1, z2, z3)
 
-    # schwarz = SchwarzTriangle(p,q,r)
-    # schwarz.make_tessellation()
+    schwarz = SchwarzTriangle(p,q,r)
+    vertices = schwarz.vertices
+    z1,z2,z3 = vertices[0],vertices[1],vertices[2]
+    main_window.canvas.make_tessellation(z1,z2,z3)
+    #schwarz.make_tessellation()
 
     main_window.run()
-
 
 def enter_pqr(window, name):
     frame = tkinter.Frame(window)

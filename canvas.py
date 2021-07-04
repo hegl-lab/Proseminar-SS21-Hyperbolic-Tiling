@@ -17,10 +17,7 @@ class Canvas:
         self.cv.pack()
         self.draw_circle(0, 1, "purple")
 
-        #N = 10
-        #angles = [2*k*np.pi/N for k in range(N)]
-        #self.draw_broken_line([0.5 + 0.3*np.exp(1j*theta) for theta in angles], "green")
-
+    
     def mouse_click(self, event):
         X, Y = event.x, event.y
         x, y = self.px_to_math(X, Y)
@@ -99,6 +96,8 @@ class Canvas:
                     self.draw_segment(z1, z2, color)
                 else:
                     self.draw_circle_arc(c, r, z1, z2, color)
+                    print("z1={}, z2={}".format(z1, z2))
+                    print("c={},r={}".format(c,r))
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''
@@ -117,3 +116,26 @@ class Canvas:
         for vertex in z:
             self.draw_H2_segment(z[i-1],z[i], color)
             i += 1
+    
+    def make_tessellation(self, z1, z2, z3, limit=5, counter=5):
+        """Makes a tessellation by reflecting the triangle."""
+        if counter==limit:
+            #z1, z2, z3 should be the three starting points of the Schwarz triangle
+            self.draw_H2_triangle(z1, z2, z3, "green")
+            counter=counter-1
+        if counter!=0 and counter<limit:
+            s12=H2_reflection(H2_segment(z1,z2))
+            s13=H2_reflection(H2_segment(z1,z3))
+            s23=H2_reflection(H2_segment(z2,z3))
+            a, b, c = reflect_triangle(z1, z2, z3, s12)
+            print("a={}, b={}, c={}".format(a,b,c))
+            self.draw_H2_triangle(a, b, c, "purple")
+            self.make_tessellation(a, b, c, limit, counter-1)
+            a, b, c = reflect_triangle(z1, z2, z3, s13)
+            self.draw_H2_triangle(a, b, c, "green")
+            self.make_tessellation(a, b, c, limit, counter-1)
+            a, b, c = reflect_triangle(z1, z2, z3, s23)
+            self.draw_H2_triangle(a, b, c, "blue")
+            self.make_tessellation(a, b, c, limit, counter-1)
+
+

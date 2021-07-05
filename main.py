@@ -19,16 +19,19 @@ def run_tessellation_program():
         p2 = p.get()
         q2 = q.get()
         r2 = r.get()
-        #This test has to actually do something TODO
-        #It should also work for q2 and r2
-        if not float(p2) > 2:
-            show_not_greater_than_two_error(first_window, "p")   
-        run_main_window_tessellation(float(p2), float(q2), float(r2))
 
+        if (float(p2) > 2 and float(q2) > 2 and float(r2) > 2):
+            run_main_window_tessellation(float(p2), float(q2), float(r2))
+        else:
+            if not float(p2) > 2:
+                show_not_greater_than_two_error(first_window, "p")
+            if not float(q2) > 2:
+                show_not_greater_than_two_error(first_window, "q")
+            if not float(r2) > 2:
+                show_not_greater_than_two_error(first_window, "r")   
+        
     printButton = tkinter.Button(first_window,text = "Enter", command = f)
     printButton.pack()
-    # printButton = tkinter.Button(first_window,text = "Exit", command = first_window.destroy)
-    # printButton.pack()
 
     first_window.mainloop()
 
@@ -36,16 +39,18 @@ def run_main_window_tessellation(p,q,r):
     main_window = Window()
 
     # Just a test to see if stuff works. p,q and r shouldn't be greater than 10.
-    z1 = - p * 0.1 + p * 0.1j
-    z2 = q * 0.1 - q * 0.1j
-    z3 = r * 0.1 + r * 0.1j
-    main_window.canvas.make_tessellation(z1, z2, z3)
+    # z1 = - p * 0.1 + p * 0.1j
+    # z2 = q * 0.1 - q * 0.1j
+    # z3 = r * 0.1 + r * 0.1j
+    # main_window.canvas.make_tessellation(z1, z2, z3)
 
-    # schwarz = SchwarzTriangle(p,q,r)
-    # schwarz.make_tessellation()
+    schwarz = SchwarzTriangle(p,q,r)
+    vertices = schwarz.vertices
+    z1,z2,z3 = vertices[0],vertices[1],vertices[2]
+    main_window.canvas.make_tessellation(z1,z2,z3)
+    #schwarz.make_tessellation()
 
     main_window.run()
-
 
 def enter_pqr(window, name):
     frame = tkinter.Frame(window)
@@ -55,7 +60,6 @@ def enter_pqr(window, name):
     var = tkinter.StringVar()
     pqr = tkinter.Entry(frame, textvariable=var, exportselection=0)
     pqr.pack(side="left")
-    
     return pqr
     
 def show_not_greater_than_two_error(window, name):
@@ -115,8 +119,8 @@ class Window:
     def run(self):
         self.top.mainloop()
 
-#if __name__ == "__main__":
-   # run_tessellation_program()
+if __name__ == "__main__":
+    run_tessellation_program()
 #main_window = Window()
 
     # Test for H2_reflection

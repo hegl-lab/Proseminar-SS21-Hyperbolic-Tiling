@@ -184,7 +184,7 @@ def get_barycenter(z1,z2,z3):
     beta = get_angle(z2,z1,z2,z3)
     gamma = get_angle(z3,z1,z3,z1)
     z = (alpha*z1 + beta*z2 + gamma*z3)/(alpha+beta+gamma)
-    return(z)
+    return z
 
 
 

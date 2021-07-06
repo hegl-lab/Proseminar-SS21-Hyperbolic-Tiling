@@ -19,7 +19,8 @@ class H2_segment:
         y1=self.z1.imag
         x2=self.z2.real
         y2=self.z2.imag
-        if x1 * y2 != x2 * y1:
+        error= 10 ** (-4)
+        if x1 * y2 > x2 * y1 + error or x1 * y2 < x2 * y1 - error:
             x = (x1**2 * y2 - x2**2 * y1 + y1**2 * y2 - y1 * y2**2 + y2 - y1) / (2 * (x1 * y2 - x2 * y1))
             y = (x1**2 * x2 - x1 * x2**2 + y1**2 * x2 - x1 * y2**2 + x2 - x1) / (2 * (x2 * y1 - x1 * y2))
             c = x + y * 1j
@@ -112,7 +113,7 @@ def reflect_triangle(z1, z2, z3, s):
         z1_ref=s.reflect(z1)
         z2_ref=s.reflect(z2)
         z3_ref=s.reflect(z3)
-        return z1_ref, z2_ref, z3_ref       
+        return z1_ref, z2_ref, z3_ref
 
 
 def H2_midpoint(z1, z2):
@@ -124,10 +125,10 @@ def H2_midpoint(z1, z2):
     
     #find hyperbolic distance from 0 = f(z1) to f(z2)
     r1 = math.sqrt(normsq(fz2)) #euclidean distance from 0 to f(z2)
-    hyp_dist = hyp_dist_from_eucl_dist(r1) 
+    hyp_dist = hyp_dist_from_eucl_dist(r1)
     
     #find midpoint between f(z1) and f(z2)
-    half_hyp_dist = hyp_dist / 2 
+    half_hyp_dist = hyp_dist / 2
     r2 = eucl_dist_from_hyp_dist(half_hyp_dist)
     fm = r2 / r1 * fz2
 
@@ -148,7 +149,7 @@ def hyp_dist_from_eucl_dist(r):
 def eucl_dist_from_hyp_dist(h):
     """Returns the euclidean distance that gives the hyperbolic distance h.
     This only works when one point is at 0."""
-    return (-1 + math.e**h) / (1 + math.e**h) 
+    return (-1 + math.exp(h)) / (1 + math.exp(h))
 
 def iso_map(z,a):
     ''' Computes an isometry '''
@@ -172,7 +173,7 @@ def get_angle(z1,z2,z12,z22):
     rad_angle = np.arctan(tan_alpha)
     if(rad_angle > (np.pi/2)):
         return np.pi - rad_angle
-    else: 
+    else:
 #       <<<<<<< HEAD
         return rad_angle
 
@@ -184,6 +185,7 @@ def get_barycenter(z1,z2,z3):
     gamma = get_angle(z3,z1,z3,z1)
     z = (alpha*z1 + beta*z2 + gamma*z3)/(alpha+beta+gamma)
     return(z)
+
 
 
 

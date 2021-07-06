@@ -3,7 +3,7 @@ import math
 from h2geometry import *
 from tools import mod2pi
 
-class Canvas:  
+class Canvas:
     def __init__(self, top):
         self.size_math = 2*1.2
         self.size_px = 0.8*min(top.winfo_screenwidth(), top.winfo_screenheight())
@@ -16,6 +16,7 @@ class Canvas:
         self.cv.focus_set()
         self.cv.pack()
         self.draw_circle(0, 1, "purple")
+        self.sides={}
 
     
     def mouse_click(self, event):
@@ -70,8 +71,8 @@ class Canvas:
         ''' Draws the hyperbolic segment between two points '''
         #define an H2_segment object
         segment=H2_segment(z1, z2)
-        self.draw_point(z1,"red")
-        self.draw_point(z2,"red")
+        #self.draw_point(z1,"red")
+        #self.draw_point(z2,"red")
         #find the Euclidean circle that includes z1 and z2 and is centered on the boundary of the disk
         if z1!=z2:
             r, c=segment.get_circle()
@@ -96,8 +97,6 @@ class Canvas:
                     self.draw_segment(z1, z2, color)
                 else:
                     self.draw_circle_arc(c, r, z1, z2, color)
-                    print("z1={}, z2={}".format(z1, z2))
-                    print("c={},r={}".format(c,r))
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''
@@ -108,33 +107,69 @@ class Canvas:
         
         # tests that I will remove:
         #self.draw_point(H2_midpoint(z1,z2))
-        
+
+    def draw_H2_triangle_by_sides(self, sides):
+        self.draw_H2_segment(sides[0].s.z1, sides[0].s.z2, complete=False)
+        self.draw_H2_segment(sides[1].s.z1, sides[1].s.z2, complete=False)
+        self.draw_H2_segment(sides[2].s.z1, sides[2].s.z2, complete=False)
 
     def draw_H2_polygon(self, z, color, fill=False):
         ''' Draws a hyperbolic polygon given by its list of vertices (z is a list)'''
-        i = 0 
+        i = 0
         for vertex in z:
             self.draw_H2_segment(z[i-1],z[i], color)
             i += 1
+
+    def H2_triangle_sides(self, z1, z2, z3):
+        s12 = H2_segment(z1, z2)
+        s23 = H2_segment(z2, z3)
+        s13 = H2_segment(z1, z3)
+        return s12, s23, s13
     
-    def make_tessellation(self, z1, z2, z3, limit=5, counter=5):
+    def initiate_sides(self, s12, s23, s13):
+        self.sides[s12]=1
+        self.sides[s23]=1
+        self.sides[s13]=1
+
+    def triangle_already_here(self, s12, s23, s13):
+        if s12 in self.sides and s23 in self.sides and s13 in self.sides:
+            return True
+        return False
+    
+    def add_missing_sides(self, s12, s23, s13):
+        if not(s12 in self.sides):
+            self.sides[s12]=1
+        if not(s23 in self.sides):
+            self.sides[s23]=1
+        if not(s13 in self.sides):
+            self.sides[s13]=1
+
+    def make_tessellation(self, z1, z2, z3, startTriangle, limit=11, counter=11):
         """Makes a tessellation by reflecting the triangle."""
         if counter==limit:
-            #z1, z2, z3 should be the three starting points of the Schwarz triangle
-            self.draw_H2_triangle(z1, z2, z3, "green")
+            #startTriangle contains the hyperbolic segments of the starting triangle
+            self.draw_H2_triangle_by_sides(startTriangle)
             counter=counter-1
         if counter!=0 and counter<limit:
-            s12=H2_reflection(H2_segment(z1,z2))
-            s13=H2_reflection(H2_segment(z1,z3))
-            s23=H2_reflection(H2_segment(z2,z3))
-            z3_ref=s12.reflect(z3)
-            self.draw_H2_triangle(z1, z2, z3_ref, "purple")
-            self.make_tessellation(z1, z2, z3_ref, limit, counter-1)
-            z2_ref=s13.reflect(z2)
-            self.draw_H2_triangle(z1, z2_ref, z3, "green")
-            self.make_tessellation(z1, z2_ref, z3, limit, counter-1)
-            z1_ref=s23.reflect(z1)
-            self.draw_H2_triangle(z1_ref, z2, z3, "blue")
-            self.make_tessellation(z1_ref, z2, z3, limit, counter-1)
+            z1_ref, z2_ref, z3_ref = reflect_triangle(z1, z2, z3, startTriangle[0])
+            s12, s23, s13 = self.H2_triangle_sides(z1_ref, z2_ref, z3_ref)
+            if not self.triangle_already_here(s12, s23, s13):
+                self.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
+                self.add_missing_sides(s12, s23, s13)
+                self.make_tessellation(z1_ref, z2_ref, z3_ref,startTriangle, limit, counter-1)
+            z1_ref, z2_ref, z3_ref = reflect_triangle(z1, z2, z3, startTriangle[1])
+            s12, s23, s13 = self.H2_triangle_sides(z1_ref, z2_ref, z3_ref)
+            if not self.triangle_already_here(s12, s23, s13):
+                self.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
+                self.add_missing_sides(s12, s23, s13)
+                self.make_tessellation(z1_ref, z2_ref, z3_ref,startTriangle, limit, counter-1)
+            z1_ref, z2_ref, z3_ref = reflect_triangle(z1, z2, z3, startTriangle[2])
+            s12, s23, s13 = self.H2_triangle_sides(z1_ref, z2_ref, z3_ref)
+            if not self.triangle_already_here(s12, s23, s13):
+                self.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
+                self.add_missing_sides(s12, s23, s13)
+                self.make_tessellation(z1_ref, z2_ref, z3_ref,startTriangle, limit, counter-1)
+
+
 
 

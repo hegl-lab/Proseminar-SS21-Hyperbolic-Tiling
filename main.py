@@ -47,7 +47,6 @@ def run_main_window_tessellation(p,q,r):
     schwarz = SchwarzTriangle(p,q,r)
     vertices = schwarz.vertices
     z1,z2,z3 = vertices[0],vertices[1],vertices[2]
-    main_window.canvas.make_tessellation(z1,z2,z3)
     #schwarz.make_tessellation()
 
     main_window.run()

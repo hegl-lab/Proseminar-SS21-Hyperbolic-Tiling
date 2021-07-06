@@ -81,10 +81,11 @@ class H2_reflection:
             else:
                 x_ref = a + (x - a) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
                 y_ref = b + (y - b) * r ** 2 / ( (x - a) ** 2 + (y - b) ** 2)
-            x_ref = round(x_ref, 2)
-            y_ref = round(y_ref, 2)
             z_ref = x_ref + y_ref * 1j
-            return z_ref
+            if math.sqrt(normsq(z_ref))<1:
+                return z_ref
+            else:
+                return 0+0*1j
         else:
             x = z.real
             y = z.imag
@@ -94,15 +95,17 @@ class H2_reflection:
                 if slope != 0:
                     x_ref = (2 * (y - e1.imag + slope * e1.real) - x * (slope - 1 / slope)) / (slope + 1 / slope)
                     y_ref = (2 * (e1.imag / slope + x - e1.real) + y * (slope - 1 / slope)) / (slope + 1 / slope)
-                    x_ref = round(x_ref, 2)
-                    y_ref = round(y_ref, 2)
                 else:
                     x_ref = x
                     y_ref = -y
             else:
                 x_ref = -x
                 y_ref = y
-            return x_ref + y_ref * 1j
+            z_ref = x_ref + y_ref * 1j
+            if math.sqrt(normsq(z_ref))<1:
+                return z_ref
+            else:
+                return 0+0*1j
 
 
 def reflect_triangle(z1, z2, z3, s):

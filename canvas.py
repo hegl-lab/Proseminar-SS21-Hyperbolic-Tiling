@@ -100,7 +100,6 @@ class Canvas:
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''
-        #should I perhaps add the fill function?
         self.draw_H2_segment(z1, z2, color, False)
         self.draw_H2_segment(z2, z3, color, False)
         self.draw_H2_segment(z3, z1, color, False)

@@ -149,7 +149,7 @@ def hyp_dist_from_eucl_dist(r):
 def eucl_dist_from_hyp_dist(h):
     """Returns the euclidean distance that gives the hyperbolic distance h.
     This only works when one point is at 0."""
-    return (-1 + math.exp(h)) / (1 + math.exp(h))
+    return (-1 + math.exp(h)) / (1 + math.exp(h))  
 
 def iso_map(z,a):
     ''' Computes an isometry '''

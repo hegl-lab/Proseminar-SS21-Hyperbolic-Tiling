@@ -7,6 +7,7 @@ import tkinter
 from h2geometry import *
 
 def run_tessellation_program():
+    """Opens a window where you can write values for p, q and r."""
     first_window = tkinter.Tk()
     first_window.title("Schwarz triangle tessellation")
     
@@ -19,6 +20,13 @@ def run_tessellation_program():
         p2 = p.get()
         q2 = q.get()
         r2 = r.get()
+        check_conditions_and_start(p2,q2,r2,first_window)
+
+    def g(e):
+        p2 = p.get()
+        q2 = q.get()
+        r2 = r.get()
+        check_conditions_and_start(p2,q2,r2,first_window)
 
         if not ((float(p2) == 2 and float(q2) == 2) or (float(p2) == 2 and float(r2) == 2) or (float(q2) == 2 and float(r2) == 2)):
             if float(p2) > 1 and float(q2) > 1 and float(r2) > 1:
@@ -34,9 +42,12 @@ def run_tessellation_program():
     printButton = tkinter.Button(first_window,text = "Enter", command = f)
     printButton.pack()
 
+    first_window.bind('<Return>', g)
+
     first_window.mainloop()
 
 def run_main_window_tessellation(p,q,r):
+    """Opens a window with a Schwarz triangle tessellation given p,q and r."""
     main_window = Window()
     schwarz = SchwarzTriangle(p,q,r)
     vertices = schwarz.vertices

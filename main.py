@@ -62,30 +62,6 @@ def enter_pqr(window, name):
     return pqr
     
 
-def test_H2_reflection(window):
-    z1=0.5+0.5j
-    z2=-0.3-0.3j
-    window.canvas.draw_H2_segment(z1, z2, "cyan")
-    s=H2_segment(z1, z2)
-    z3=0.2+0.3j
-    s_ref=H2_reflection(s)
-    z3_ref=s_ref.reflect(z3)
-    print("z3_ref={}".format(z3_ref))
-    window.canvas.draw_H2_segment(z3, z3_ref, "green", complete=False)
-
-def test_reflect_triangle(window):
-    z1=0.2+0.7j
-    z2=-0.5-0.2j
-    s=H2_segment(z1, z2)
-    window.canvas.draw_H2_segment(z1, z2)
-    s_ref=H2_reflection(s)
-    z11 = 0.1 + 0.9j
-    z12 = -0.5 + 0.1j 
-    z13 = -0.9 + 0.1j
-    a, b, c = reflect_triangle(s_ref, z11, z12, z13)
-    window.canvas.draw_H2_triangle(a, b, c, "green")
-
-
 def test_draw_triangle_and_polygon(window):
         # Test for draw_H2_triangle
     z11 = 0.5 + 0.5j
@@ -117,19 +93,8 @@ class Window:
 
 if __name__ == "__main__":
     run_tessellation_program()
-    #main_window = Window()
-
-    # Test for H2_reflection
-    # ------------------------uncomment the next line for testing
-    #test_H2_reflection(main_window)
-
-    #Test for reflecting a triangle
-    #------------------------uncomment the next line for testing
-    #test_reflect_triangle(main_window)
-    
     #test_draw_triangle_and_polygon(main_window)
 
     #main_window.run()
+    #test for barycenter
 
-#test for barycenter
-#test_draw_triangle_and_polygon(main_window)

@@ -147,7 +147,7 @@ class Canvas:
     def make_tessellation(self, z1, z2, z3, startTriangle, limit=11, counter=11):
         """Makes a tessellation by reflecting the triangle."""
         if counter==limit:
-            #startTrinagle contains the hyperbolic segments of the starting triangle
+            #startTriangle contains the hyperbolic segments of the starting triangle
             self.draw_H2_triangle_by_sides(startTriangle)
             counter=counter-1
         if counter!=0 and counter<limit:

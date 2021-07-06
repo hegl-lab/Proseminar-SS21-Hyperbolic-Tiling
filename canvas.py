@@ -96,8 +96,6 @@ class Canvas:
                     self.draw_segment(z1, z2, color)
                 else:
                     self.draw_circle_arc(c, r, z1, z2, color)
-                    print("z1={}, z2={}".format(z1, z2))
-                    print("c={},r={}".format(c,r))
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''
@@ -117,7 +115,7 @@ class Canvas:
             self.draw_H2_segment(z[i-1],z[i], color)
             i += 1
     
-    def make_tessellation(self, z1, z2, z3, limit=5, counter=5):
+    def make_tessellation(self, z1, z2, z3, limit=4, counter=4):
         """Makes a tessellation by reflecting the triangle."""
         if counter==limit:
             #z1, z2, z3 should be the three starting points of the Schwarz triangle
@@ -127,15 +125,15 @@ class Canvas:
             s12=H2_reflection(H2_segment(z1,z2))
             s13=H2_reflection(H2_segment(z1,z3))
             s23=H2_reflection(H2_segment(z2,z3))
-            a, b, c = reflect_triangle(z1, z2, z3, s12)
-            print("a={}, b={}, c={}".format(a,b,c))
-            self.draw_H2_triangle(a, b, c, "purple")
-            self.make_tessellation(a, b, c, limit, counter-1)
-            a, b, c = reflect_triangle(z1, z2, z3, s13)
-            self.draw_H2_triangle(a, b, c, "green")
-            self.make_tessellation(a, b, c, limit, counter-1)
-            a, b, c = reflect_triangle(z1, z2, z3, s23)
-            self.draw_H2_triangle(a, b, c, "blue")
-            self.make_tessellation(a, b, c, limit, counter-1)
+            z3_ref=s12.reflect(z3)
+            self.draw_H2_triangle(z1, z2, z3_ref, "purple")
+            self.make_tessellation(z1, z2, z3_ref, limit, counter-1)
+            z2_ref=s13.reflect(z2)
+            self.draw_H2_triangle(z1, z2_ref, z3, "green")
+            self.make_tessellation(z1, z2_ref, z3, limit, counter-1)
+            z1_ref=s23.reflect(z1)
+            self.draw_H2_triangle(z1_ref, z2, z3, "blue")
+            self.make_tessellation(z1_ref, z2, z3, limit, counter-1)
+
 
 

@@ -19,7 +19,8 @@ class H2_segment:
         y1=self.z1.imag
         x2=self.z2.real
         y2=self.z2.imag
-        if x1 * y2 != x2 * y1:
+        error= 10 ** (-4)
+        if x1 * y2 > x2 * y1 + error or x1 * y2 < x2 * y1 - error:
             x = (x1**2 * y2 - x2**2 * y1 + y1**2 * y2 - y1 * y2**2 + y2 - y1) / (2 * (x1 * y2 - x2 * y1))
             y = (x1**2 * x2 - x1 * x2**2 + y1**2 * x2 - x1 * y2**2 + x2 - x1) / (2 * (x2 * y1 - x1 * y2))
             c = x + y * 1j

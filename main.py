@@ -41,6 +41,7 @@ def run_main_window_tessellation(p,q,r):
     schwarz = SchwarzTriangle(p,q,r)
     vertices = schwarz.vertices
     z1,z2,z3 = vertices[0],vertices[1],vertices[2]
+    main_window.canvas.initiate_tessellationPoints(z1, z2, z3)
     s12 = H2_segment(z1, z2)
     s13 = H2_segment(z1, z3)
     s23 = H2_segment(z2, z3)

@@ -8,7 +8,7 @@ class SchwarzTriangle:
     """This class implements a tessellation of the hyperbolic plane by Schwarz triangles."""
 
     def __init__(self, p, q, r):
-        assert 1/p + 1/q + 1/r < 1
+        #assert 1/p + 1/q + 1/r < 1
         self.angle1 = math.pi/p
         self.angle2 = math.pi/q
         self.angle3 = math.pi/r

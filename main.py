@@ -6,6 +6,25 @@ from canvas import Canvas
 import tkinter
 from h2geometry import *
 
+def check_conditions_and_start(p2,q2,r2,first_window):
+    """Checks that the necessary conditions are being met before opening the main window."""
+    if not ((float(p2) == 2 and float(q2) == 2) or (float(p2) == 2 and float(r2) == 2) or (float(q2) == 2 and float(r2) == 2)):
+            if float(p2) > 1 and float(q2) > 1 and float(r2) > 1:
+                if (1/float(p2) + 1/float(q2) + 1/float(r2) < 1):
+                    first_window.destroy()
+                    run_main_window_tessellation(float(p2), float(q2), float(r2))
+                else:
+                    label = tkinter.Label(first_window,text= "1/p + 1/q + 1/r = " 
+                                                            + str(1/float(p2) + 1/float(q2) + 1/float(r2)) 
+                                                            + ", but should be < 1.", fg = "red")
+                    label.pack(side="left")  
+            else:
+                label = tkinter.Label(first_window,text= "All values must be > 1.", fg = "red")
+                label.pack(side="left") 
+    else:
+        label = tkinter.Label(first_window,text= "Only one value can be 2.", fg = "red")
+        label.pack(side="left")
+
 def run_tessellation_program():
     """Opens a window where you can write values for p, q and r."""
     first_window = tkinter.Tk()

@@ -8,7 +8,7 @@ class SchwarzTriangle:
     """This class implements a tessellation of the hyperbolic plane by Schwarz triangles."""
 
     def __init__(self, p, q, r):
-        assert p > 2 and q > 2 and r > 2
+        #assert p > 2 and q > 2 and r > 2
         self.angle1 = math.pi/p
         self.angle2 = math.pi/q
         self.angle3 = math.pi/r
@@ -17,12 +17,12 @@ class SchwarzTriangle:
 
     def __get_lengths(self):
         """Gives a list of the lengths of the sides of the triangle"""
-        a = numpy.arccos(math.cos((self.angle1) + math.cos(self.angle2)*math.cos(self.angle3) ) / 
-                        (math.sin(self.angle2) * math.sin(self.angle3) ) )  
-        b = numpy.arccos(math.cos((self.angle2) + math.cos(self.angle3)*math.cos(self.angle1) ) / 
-                        (math.sin(self.angle3) * math.sin(self.angle1) ) )  
-        c = numpy.arccos(math.cos((self.angle3) + math.cos(self.angle1)*math.cos(self.angle2) ) / 
-                        (math.sin(self.angle1) * math.sin(self.angle2) ) )   
+        a = numpy.arccos(numpy.cos((self.angle1) + numpy.cos(self.angle2)*numpy.cos(self.angle3) ) / 
+                        (numpy.sin(self.angle2) * numpy.sin(self.angle3) ) + 0j )  
+        b = numpy.arccos(numpy.cos((self.angle2) + numpy.cos(self.angle3)*numpy.cos(self.angle1) ) / 
+                        (numpy.sin(self.angle3) * numpy.sin(self.angle1) ) + 0j )  
+        c = numpy.arccos(numpy.cos((self.angle3) + numpy.cos(self.angle1)*numpy.cos(self.angle2) ) / 
+                        (numpy.sin(self.angle1) * numpy.sin(self.angle2) ) + 0j)   
         return [a,b,c]
 
     def __get_vertices(self):
@@ -30,7 +30,7 @@ class SchwarzTriangle:
         b,c = self.lengths[1], self.lengths[2]
         A = 0
         B = eucl_dist_from_hyp_dist(c)
-        p = (math.cos(self.angle1) + math.sin(self.angle1)*1j)
+        p = (numpy.cos(self.angle1) + numpy.sin(self.angle1)*1j)
         b2 = eucl_dist_from_hyp_dist(b)
         C = b2 * p
         return [A,B,C]

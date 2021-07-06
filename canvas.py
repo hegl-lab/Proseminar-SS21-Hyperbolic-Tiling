@@ -96,18 +96,13 @@ class Canvas:
                     self.draw_segment(z1, z2, color)
                 else:
                     self.draw_circle_arc(c, r, z1, z2, color)
-                    print("z1={}, z2={}".format(z1, z2))
-                    print("c={},r={}".format(c,r))
 
     def draw_H2_triangle(self, z1, z2, z3, color, fill=False):
         ''' Draws a hyperbolic triangle given by its vertices '''
-        #should I perhaps add the fill function?
         self.draw_H2_segment(z1, z2, color, False)
         self.draw_H2_segment(z2, z3, color, False)
         self.draw_H2_segment(z3, z1, color, False)
         
-        # tests that I will remove:
-        #self.draw_point(H2_midpoint(z1,z2))
         
 
     def draw_H2_polygon(self, z, color, fill=False):
@@ -117,7 +112,7 @@ class Canvas:
             self.draw_H2_segment(z[i-1],z[i], color)
             i += 1
     
-    def make_tessellation(self, z1, z2, z3, limit=5, counter=5):
+    def make_tessellation(self, z1, z2, z3, limit=4, counter=4):
         """Makes a tessellation by reflecting the triangle."""
         if counter==limit:
             #z1, z2, z3 should be the three starting points of the Schwarz triangle

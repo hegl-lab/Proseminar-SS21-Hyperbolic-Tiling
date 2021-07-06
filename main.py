@@ -20,16 +20,17 @@ def run_tessellation_program():
         q2 = q.get()
         r2 = r.get()
 
-        if (float(p2) > 2 and float(q2) > 2 and float(r2) > 2):
-            run_main_window_tessellation(float(p2), float(q2), float(r2))
+        if not ((float(p2) == 2 and float(q2) == 2) or (float(p2) == 2 and float(r2) == 2) or (float(q2) == 2 and float(r2) == 2)):
+            if float(p2) > 1 and float(q2) > 1 and float(r2) > 1:
+                first_window.destroy()
+                run_main_window_tessellation(float(p2), float(q2), float(r2))
+            else:
+                label = tkinter.Label(first_window,text= "All values must be > 1.", fg = "red")
+                label.pack(side="left") 
         else:
-            if not float(p2) > 2:
-                show_not_greater_than_two_error(first_window, "p")
-            if not float(q2) > 2:
-                show_not_greater_than_two_error(first_window, "q")
-            if not float(r2) > 2:
-                show_not_greater_than_two_error(first_window, "r")   
-        
+            label = tkinter.Label(first_window,text= "Only one value can be 2.", fg = "red")
+            label.pack(side="left")
+            
     printButton = tkinter.Button(first_window,text = "Enter", command = f)
     printButton.pack()
 
@@ -37,16 +38,11 @@ def run_tessellation_program():
 
 def run_main_window_tessellation(p,q,r):
     main_window = Window()
-
-    # Just a test to see if stuff works. p,q and r shouldn't be greater than 10.
-    # z1 = - p * 0.1 + p * 0.1j
-    # z2 = q * 0.1 - q * 0.1j
-    # z3 = r * 0.1 + r * 0.1j
-    # main_window.canvas.make_tessellation(z1, z2, z3)
-
     schwarz = SchwarzTriangle(p,q,r)
     vertices = schwarz.vertices
     z1,z2,z3 = vertices[0],vertices[1],vertices[2]
+    # main_window.canvas.draw_H2_triangle(z1,z2,z3, "yellow")
+    main_window.canvas.make_tessellation(z1,z2,z3)
     #schwarz.make_tessellation()
 
     main_window.run()
@@ -61,9 +57,6 @@ def enter_pqr(window, name):
     pqr.pack(side="left")
     return pqr
     
-def show_not_greater_than_two_error(window, name):
-    label = tkinter.Label(window,text= name + " must be > 2.", fg = "red")
-    label.pack(side="left")
 
 def test_H2_reflection(window):
     z1=0.5+0.5j

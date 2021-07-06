@@ -47,7 +47,11 @@ def run_main_window_tessellation(p,q,r):
     schwarz = SchwarzTriangle(p,q,r)
     vertices = schwarz.vertices
     z1,z2,z3 = vertices[0],vertices[1],vertices[2]
-    main_window.canvas.make_tessellation(z1,z2,z3)
+    s12 = H2_segment(z1, z2)
+    s13 = H2_segment(z1, z3)
+    s23 = H2_segment(z2, z3)
+    startTriangle = [H2_reflection(s12), H2_reflection(s13), H2_reflection(s23)]
+    main_window.canvas.make_tessellation(z1, z2, z3, startTriangle)
     #schwarz.make_tessellation()
 
     main_window.run()
@@ -121,7 +125,7 @@ class Window:
 
 if __name__ == "__main__":
     run_tessellation_program()
-#main_window = Window()
+    #main_window = Window()
 
     # Test for H2_reflection
     # ------------------------uncomment the next line for testing

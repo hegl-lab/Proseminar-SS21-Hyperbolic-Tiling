@@ -106,7 +106,11 @@ class Canvas:
         
         # tests that I will remove:
         #self.draw_point(H2_midpoint(z1,z2))
-        
+
+    def draw_H2_triangle_by_sides(self, sides):
+        self.draw_H2_segment(sides[0].s.z1, sides[0].s.z2, complete=False)
+        self.draw_H2_segment(sides[1].s.z1, sides[1].s.z2, complete=False)
+        self.draw_H2_segment(sides[2].s.z1, sides[2].s.z2, complete=False)
 
     def draw_H2_polygon(self, z, color, fill=False):
         ''' Draws a hyperbolic polygon given by its list of vertices (z is a list)'''
@@ -115,25 +119,22 @@ class Canvas:
             self.draw_H2_segment(z[i-1],z[i], color)
             i += 1
     
-    def make_tessellation(self, z1, z2, z3, limit=4, counter=4):
+    def make_tessellation(self, z1, z2, z3, startTriangle, limit=5, counter=5):
         """Makes a tessellation by reflecting the triangle."""
         if counter==limit:
-            #z1, z2, z3 should be the three starting points of the Schwarz triangle
-            self.draw_H2_triangle(z1, z2, z3, "green")
+            #startTrinagle contains the hyperbolic segments of the starting triangle
+            self.draw_H2_triangle_by_sides(startTriangle)
             counter=counter-1
         if counter!=0 and counter<limit:
-            s12=H2_reflection(H2_segment(z1,z2))
-            s13=H2_reflection(H2_segment(z1,z3))
-            s23=H2_reflection(H2_segment(z2,z3))
-            z3_ref=s12.reflect(z3)
-            self.draw_H2_triangle(z1, z2, z3_ref, "purple")
-            self.make_tessellation(z1, z2, z3_ref, limit, counter-1)
-            z2_ref=s13.reflect(z2)
-            self.draw_H2_triangle(z1, z2_ref, z3, "green")
-            self.make_tessellation(z1, z2_ref, z3, limit, counter-1)
-            z1_ref=s23.reflect(z1)
-            self.draw_H2_triangle(z1_ref, z2, z3, "blue")
-            self.make_tessellation(z1_ref, z2, z3, limit, counter-1)
+            z1_ref, z2_ref, z3_ref = reflect_triangle(z1, z2, z3, startTriangle[0])
+            self.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
+            self.make_tessellation(z1_ref, z2_ref, z3_ref,startTriangle, limit, counter-1)
+            z1_ref, z2_ref, z3_ref = reflect_triangle(z1, z2, z3, startTriangle[1])
+            self.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
+            self.make_tessellation(z1_ref, z2_ref, z3_ref,startTriangle, limit, counter-1)
+            z1_ref, z2_ref, z3_ref = reflect_triangle(z1, z2, z3, startTriangle[2])
+            self.draw_H2_triangle(z1_ref, z2_ref, z3_ref, "purple")
+            self.make_tessellation(z1_ref, z2_ref, z3_ref,startTriangle, limit, counter-1)
 
 
 

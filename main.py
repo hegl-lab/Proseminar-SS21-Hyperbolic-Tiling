@@ -22,11 +22,13 @@ def run_tessellation_program():
 
         if not ((float(p2) == 2 and float(q2) == 2) or (float(p2) == 2 and float(r2) == 2) or (float(q2) == 2 and float(r2) == 2)):
             if float(p2) > 1 and float(q2) > 1 and float(r2) > 1:
-                if not (float(p2) == float(q2) == float(r2) == 3):
+                if (1/float(p2) + 1/float(q2) + 1/float(r2) < 1):
                     first_window.destroy()
                     run_main_window_tessellation(float(p2), float(q2), float(r2))
                 else:
-                    label = tkinter.Label(first_window,text= "p = q = r = 3 doesn't work", fg = "red")
+                    label = tkinter.Label(first_window,text= "1/p + 1/q + 1/r = " 
+                                                            + str(1/float(p2) + 1/float(q2) + 1/float(r2)) 
+                                                            + ", but should be < 1.", fg = "red")
                     label.pack(side="left")  
             else:
                 label = tkinter.Label(first_window,text= "All values must be > 1.", fg = "red")
@@ -37,6 +39,8 @@ def run_tessellation_program():
             
     printButton = tkinter.Button(first_window,text = "Enter", command = f)
     printButton.pack()
+
+    first_window.bind('<Return>', f)
 
     first_window.mainloop()
 

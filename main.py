@@ -7,14 +7,16 @@ import tkinter
 from h2geometry import *
 
 def test_barycenter(window):
-    z1  = 0.4 + 0.3j
-    z2 = -0.5 + 0.1j
+    z1  = 0.4 + 0.5j
+    z2 = 0.3 + 0.1j
     z3 = -0.2 - 0.7j
+    m = 0 + 0 * 1j
     b = get_barycenter(z1, z2, z3)
     window.canvas.draw_point(z1, "blue")
     window.canvas.draw_point(z2, "blue")
     window.canvas.draw_point(z3, "blue")
     window.canvas.draw_point(b, "orange")
+    window.canvas.draw_point(m, "red")
     
 
 def check_conditions_and_start(p2,q2,r2,first_window):
@@ -105,9 +107,9 @@ class Window:
 if __name__ == "__main__":
     #run_tessellation_program()
     #----------uncomment the following lines to test the barycenter function
-    window = Window()
-    test_barycenter(window)
-    window.run()
+    #window = Window()
+    ##test_barycenter(window)
+    #window.run()
 
 
 

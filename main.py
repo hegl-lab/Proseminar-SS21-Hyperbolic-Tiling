@@ -7,8 +7,8 @@ import tkinter
 from h2geometry import *
 
 def test_barycenter(window):
-    z1  = 0.5 + 0.5j
-    z2 = -0.5 + 0.5j
+    z1  = 0.4 + 0.3j
+    z2 = -0.5 + 0.1j
     z3 = -0.2 - 0.7j
     b = get_barycenter(z1, z2, z3)
     window.canvas.draw_point(z1, "blue")

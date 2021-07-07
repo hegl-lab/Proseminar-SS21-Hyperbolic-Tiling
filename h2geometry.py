@@ -180,18 +180,38 @@ def get_angle(z1,z2,z12,z22):
 
 
 def get_barycenter(z1,z2,z3):
-    #z = (alpha*z1 + beta*z2 + gamma*z3)/(alpha+beta+gamma)
-    a = H2_midpoint_isometry(z1, z2)
-    b = H2_midpoint_isometry(z1, z3)
-    alpha = get_angle(0, a, 0, b)
-    beta = get_angle(a, 0, a, b)
-    gamma = get_angle(b, 0, b, a)
+    i = 0
+    if z1 == z2 or z3 == z2 or z1 == z3:
+        print("The three points have to be different!")
+        z = 0+ 0*1j
+        return z
+    while ((z1.real == 0 or z1.imag == 0) and z1 != 0+0*1j) or ((z2.real == 0 or z2.imag == 0) and z2 != 0 +0*1j) or ((z3.real == 0 or z3.imag == 0) and z3 != 0+0*1j):
+        z1 = np.cos(i) * z1.real + -np.sin(i) * z1.imag + 1j * (z1.real * np.sin(i) + np.cos(i) * z1.imag)
+        z2 = np.cos(i) * z2.real + -np.sin(i) * z2.imag + 1j * (z2.real * np.sin(i) + np.cos(i) * z2.imag)
+        z3 = np.cos(i) * z3.real + -np.sin(i) * z3.imag + 1j * (z3.real * np.sin(i) + np.cos(i) * z3.imag)
+        i += 10
 
-    area = np.pi - (alpha+beta+gamma)
+    else:
+        if z2 == 0+0*1j:
+            a = z1
+            b = z3
+        elif z3 == 0+0*1j:
+            a = z1
+            b = z2
+        #z = (alpha*z1 + beta*z2 + gamma*z3)/(alpha+beta+gamma)
+        else:
+            a = H2_midpoint_isometry(z1, z2)
+            b = H2_midpoint_isometry(z1, z3)
+        alpha = get_angle(0, a, 0, b)
+        beta = get_angle(a, 0, a, b)
+        gamma = get_angle(b, 0, b, a)
 
-    z = (a*(1-np.exp(-1j * area))-b*(1-np.exp(1j *area))) / (np.conj(a)*b*np.exp(1j*area) - a * np.conj(b)*np.exp(-1j*area))
+        area = (np.pi - (alpha+beta+gamma)) / 3
 
-    z = H2_midpoint_inverse_isometry(z1,z)
+
+        z = (a*(1-np.exp(-1j * area))-b*(1-np.exp(1j *area))) / (np.conj(a)*b*np.exp(1j*area) - a * np.conj(b)*np.exp(-1j*area))
+        z = np.cos(i) * z.real + np.sin(i) * z.imag + 1j * (z.real * -np.sin(i) + np.cos(i) * z.imag)
+        z = H2_midpoint_inverse_isometry(z1,z)
 
     return z
 

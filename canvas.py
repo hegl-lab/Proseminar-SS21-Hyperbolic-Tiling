@@ -103,9 +103,6 @@ class Canvas:
         self.draw_H2_segment(z1, z2, color, False)
         self.draw_H2_segment(z2, z3, color, False)
         self.draw_H2_segment(z3, z1, color, False)
-        
-        # tests that I will remove:
-        #self.draw_point(H2_midpoint(z1,z2))
 
     def draw_H2_triangle_by_sides(self, sides):
         self.draw_H2_segment(sides[0].s.z1, sides[0].s.z2, complete=False)

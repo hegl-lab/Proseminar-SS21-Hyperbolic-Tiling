@@ -115,7 +115,6 @@ def reflect_triangle(z1, z2, z3, s):
         z3_ref=s.reflect(z3)
         return z1_ref, z2_ref, z3_ref
 
-
 def H2_midpoint(z1, z2):
     ''' Computes the hyperbolic midpoint of two points in the Poincaré disk model '''
     if z1 == z2:

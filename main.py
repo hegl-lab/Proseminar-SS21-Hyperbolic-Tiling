@@ -103,11 +103,12 @@ class Window:
         self.top.mainloop()
 
 if __name__ == "__main__":
-    run_tessellation_program()
+    #run_tessellation_program()
     #----------uncomment the following lines to test the barycenter function
-    #window = Window()
-    #test_barycenter(window)
+    window = Window()
+    test_barycenter(window)
     #test_draw_triangle_and_polygon(main_window)
-    #window.run()
+    window.run()
+
 
 

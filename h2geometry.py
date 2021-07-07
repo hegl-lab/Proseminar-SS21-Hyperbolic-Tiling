@@ -180,10 +180,19 @@ def get_angle(z1,z2,z12,z22):
 
 
 def get_barycenter(z1,z2,z3):
-    alpha = get_angle(z1,z2,z1,z3)
-    beta = get_angle(z2,z1,z2,z3)
-    gamma = get_angle(z3,z1,z3,z1)
-    z = (alpha*z1 + beta*z2 + gamma*z3)/(alpha+beta+gamma)
+    #z = (alpha*z1 + beta*z2 + gamma*z3)/(alpha+beta+gamma)
+    a = H2_midpoint_isometry(z1, z2)
+    b = H2_midpoint_isometry(z1, z3)
+    alpha = get_angle(0, a, 0, b)
+    beta = get_angle(a, 0, a, b)
+    gamma = get_angle(b, 0, b, a)
+
+    area = np.pi - (alpha+beta+gamma)
+
+    z = (a*(1-np.exp(-1j * area))-b*(1-np.exp(1j *area))) / (np.conj(a)*b*np.exp(1j*area) - a * np.conj(b)*np.exp(-1j*area))
+
+    z = H2_midpoint_inverse_isometry(z1,z)
+
     return z
 
 

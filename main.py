@@ -107,7 +107,6 @@ if __name__ == "__main__":
     #----------uncomment the following lines to test the barycenter function
     window = Window()
     test_barycenter(window)
-    #test_draw_triangle_and_polygon(main_window)
     window.run()
 
 

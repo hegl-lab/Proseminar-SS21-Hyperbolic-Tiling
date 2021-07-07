@@ -185,9 +185,9 @@ def get_barycenter(z1,z2,z3):
         z = 0+ 0*1j
         return z
     while ((z1.real == 0 or z1.imag == 0) and z1 != 0+0*1j) or ((z2.real == 0 or z2.imag == 0) and z2 != 0 +0*1j) or ((z3.real == 0 or z3.imag == 0) and z3 != 0+0*1j):
-        z1 = np.cos(i) * z1.real + -np.sin(i) * z1.imag + 1j * (z1.real * np.sin(i) + np.cos(i) * z1.imag)
-        z2 = np.cos(i) * z2.real + -np.sin(i) * z2.imag + 1j * (z2.real * np.sin(i) + np.cos(i) * z2.imag)
-        z3 = np.cos(i) * z3.real + -np.sin(i) * z3.imag + 1j * (z3.real * np.sin(i) + np.cos(i) * z3.imag)
+        z1 = np.cosh(i) * z1.real + np.sinh(i) * z1.imag + 1j * (z1.real * np.sinh(i) + np.cosh(i) * z1.imag)
+        z2 = np.cosh(i) * z2.real + np.sinh(i) * z2.imag + 1j * (z2.real * np.sinh(i) + np.cosh(i) * z2.imag)
+        z3 = np.cosh(i) * z3.real + np.sinh(i) * z3.imag + 1j * (z3.real * np.sinh(i) + np.cosh(i) * z3.imag)
         i += 10
 
     else:
@@ -209,7 +209,7 @@ def get_barycenter(z1,z2,z3):
 
 
         z = (a*(1-np.exp(-1j * area))-b*(1-np.exp(1j *area))) / (np.conj(a)*b*np.exp(1j*area) - a * np.conj(b)*np.exp(-1j*area))
-        z = np.cos(i) * z.real + np.sin(i) * z.imag + 1j * (z.real * -np.sin(i) + np.cos(i) * z.imag)
+        z = np.cosh(i) * z.real - np.sinh(i) * z.imag + 1j * (z.real * -np.sinh(i) + np.cosh(i) * z.imag)
         z = H2_midpoint_inverse_isometry(z1,z)
 
     return z

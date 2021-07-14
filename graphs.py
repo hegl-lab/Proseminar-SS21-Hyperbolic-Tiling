@@ -3,6 +3,7 @@ import math
 class Graphs(object):
        
         def __init__(self, number_of_vertices):
+            self.number_of_vertices = number_of_vertices         
             self.matrix = [[0] * number_of_vertices for _ in range(number_of_vertices)]
             
         def __repr__(self):
